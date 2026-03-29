@@ -649,7 +649,7 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
 _sb.auth.onAuthStateChange((_event, session) => {
   if (session) {
     showToast('✅ Login realizado! Redirecionando...');
-    setTimeout(() => { window.location.replace('dashboard.html'); }, 900);
+    setTimeout(() => { window.location.replace('index.html'); }, 900);
   }
 });
 
