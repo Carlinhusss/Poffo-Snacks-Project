@@ -6,7 +6,13 @@ Totem: https://poffo-snacks-totem.vercel.app/
 
 ---
 
-# ⭐ **Review do Projeto Poffo Snacks**
+# ⚠️ Estado do Projeto
+
+Este projeto ainda está em fase **experimental**. Muitas partes estão em construção, sendo testadas ou reestruturadas, e ainda não representam a versão final do sistema. Estou trabalhando continuamente para aprimorar cada módulo, ajustar fluxos, melhorar a experiência do usuário e consolidar a versão definitiva do Poffo Snacks.
+
+---
+
+## ⭐ **Review do Projeto Poffo Snacks**
 
 O **Poffo Snacks** é um projeto dividido em múltiplas interfaces independentes, cada uma com um propósito específico dentro do fluxo de pedidos de um sistema de lanches. O repositório contém quatro módulos principais:
 
