@@ -565,7 +565,7 @@ body {
           <span class="flabel">E-mail</span>
           <div class="input-wrap">
             <span class="icon">📧</span>
-            <input id="signupEmail" type="email" placeholder="Pode ser fictício! ex: lucianolegal@gmail.com" autocomplete="email" oninput="clearErr(this)"/>
+            <input id="signupEmail" type="email" placeholder="username@gmail.com" autocomplete="email" oninput="clearErr(this)"/>
           </div>
           <small style="font-size:.72rem;color:var(--gray-d);margin-top:4px;">📌 Não precisa ser um e-mail real.</small>
         </div>
@@ -576,7 +576,6 @@ body {
             <input id="signupPw" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" oninput="checkStrength(this.value);clearErr(this)"/>
             <button class="toggle-pw" type="button" onclick="togglePw('signupPw',this)" aria-label="Mostrar senha">👁️</button>
           </div>
-          <small style="font-size:.72rem;color:var(--gray-d);margin-top:4px;">📌 Não precisa ser um e-mail real.</small>
           <div class="pw-strength" id="pwStrength" style="display:none">
             <div class="pw-bars">
               <div class="pw-bar" id="bar1"></div>
