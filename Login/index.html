@@ -641,7 +641,7 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
 (async () => {
   const { data: { session } } = await _sb.auth.getSession();
   if (session) {
-    window.location.replace('index.html');
+    window.location.replace('https://poffo-snacks-site.vercel.app/');
   }
 })();
 
@@ -649,7 +649,7 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
 _sb.auth.onAuthStateChange((_event, session) => {
   if (session) {
     showToast('✅ Login realizado! Redirecionando...');
-    setTimeout(() => { window.location.replace('index.html'); }, 900);
+    setTimeout(() => { window.location.replace('https://poffo-snacks-site.vercel.app/'); }, 900);
   }
 });
 
@@ -733,7 +733,7 @@ function setLoading(btnId, loading) {
 window.loginGoogle = async function() {
   const { error } = await _sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin + '/index.html' }
+    options: { redirectTo: 'https://poffo-snacks-site.vercel.app/' }
   });
   if (error) showToast('❌ Erro ao entrar com Google.');
 };
@@ -758,7 +758,7 @@ window.doLogin = async function() {
       showMsg('loginMsg', msg, 'err');
     } else {
       showMsg('loginMsg', '✅ Login realizado! Redirecionando...', 'ok');
-      setTimeout(() => { window.location.replace('index.html'); }, 900);
+      setTimeout(() => { window.location.replace('https://poffo-snacks-site.vercel.app/'); }, 900);
     }
   } catch {
     showMsg('loginMsg', '❌ Erro de conexão. Tente novamente.', 'err');
@@ -792,7 +792,7 @@ window.doSignup = async function() {
       password: pw,
       options: {
         data: { username: name },
-        emailRedirectTo: window.location.origin + '/index.html'
+        emailRedirectTo: 'https://poffo-snacks-site.vercel.app/'
       }
     });
     if (error) {
