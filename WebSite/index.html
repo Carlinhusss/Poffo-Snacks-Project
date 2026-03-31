@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-/* [CSS permanece o mesmo] */
 :root {
   --pink:      #FFE0FB;
   --pink-d:    #f5c8f0;
@@ -41,30 +40,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 
 .scroll-bar{position:fixed;top:0;left:0;z-index:9999;height:3px;width:0%;background:linear-gradient(90deg,var(--purple),var(--purple-l));transition:width .1s linear;}
 
-.hero-floats,.depo-floats{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
-.hblob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;}
-.hb1{width:400px;height:400px;background:var(--pink);top:-100px;right:-80px;animation:drift 12s ease-in-out infinite;}
-.hb2{width:300px;height:300px;background:var(--purple-l);bottom:-60px;left:-60px;animation:drift 15s ease-in-out infinite reverse;}
-@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
-.fe,.df{position:absolute;font-size:2rem;opacity:.2;user-select:none;animation:floatUp 6s ease-in-out infinite;will-change:transform;}
-.fe1{top:8%;left:6%;animation-delay:0s;animation-duration:7s;}
-.fe2{top:65%;left:5%;animation-delay:1.2s;animation-duration:8s;}
-.fe3{top:18%;right:6%;animation-delay:.6s;animation-duration:6.5s;}
-.fe4{top:72%;right:8%;animation-delay:2s;animation-duration:7.5s;}
-.fe5{top:40%;left:2%;animation-delay:3s;animation-duration:9s;}
-.fe6{top:5%;right:20%;animation-delay:1.8s;animation-duration:6s;}
-.fe7{top:52%;right:16%;animation-delay:.4s;animation-duration:8.5s;}
-.fe8{top:82%;left:33%;animation-delay:2.5s;animation-duration:7s;}
-.df1{top:10%;left:4%;animation-delay:0s;animation-duration:8s;}
-.df2{top:60%;left:8%;animation-delay:1.5s;animation-duration:7s;}
-.df3{top:20%;right:5%;animation-delay:.8s;animation-duration:9s;}
-.df4{top:75%;right:7%;animation-delay:2.2s;animation-duration:6.5s;}
-.df5{top:45%;left:3%;animation-delay:3.5s;animation-duration:8s;}
-.df6{top:8%;right:18%;animation-delay:1.2s;animation-duration:7.5s;}
-.df7{top:55%;right:14%;animation-delay:.5s;animation-duration:9.5s;}
-.df8{top:85%;left:45%;animation-delay:2.8s;animation-duration:7s;}
-@keyframes floatUp{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
-
 .auth-guard{position:fixed;inset:0;z-index:10000;background:rgba(255,224,251,.96);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:20px;}
 .auth-guard.hidden{display:none;}
 .auth-guard-icon{font-size:3.5rem;animation:floatUp 3s ease-in-out infinite;}
@@ -81,6 +56,197 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .modal-close:hover{background:var(--purple);color:#fff;transform:rotate(90deg);}
 .modal-title{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--text);margin-bottom:4px;font-style:italic;}
 .modal-sub{color:var(--text-soft);font-size:.88rem;margin-bottom:24px;}
+
+/* User Dropdown Styles */
+.user-menu-wrap {
+  position: relative;
+}
+
+.user-btn {
+  background: var(--pink);
+  color: var(--purple-d);
+  border: 1.5px solid var(--pink-d);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .2s;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-btn:hover {
+  background: var(--pink-d);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(213, 129, 199, .2);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--white);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--border);
+  min-width: 200px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all .2s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.user-dropdown.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.dropdown-header {
+  padding: 12px 16px;
+  background: var(--snow);
+  border-bottom: 1px solid var(--border);
+  font-size: .8rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: 'Quicksand', sans-serif;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .15s;
+}
+
+.dropdown-item:hover {
+  background: var(--pink);
+  color: var(--purple-d);
+}
+
+.dropdown-item.sair {
+  color: #c0392b;
+  border-top: 1px solid var(--border);
+}
+
+.dropdown-item.sair:hover {
+  background: #ffe0e0;
+}
+
+/* Pedidos Modal Styles */
+.pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.pedido-item {
+  background: var(--snow);
+  border: 1.5px solid var(--border);
+  border-radius: var(--rs);
+  padding: 16px;
+  transition: transform .2s, border-color .2s;
+}
+
+.pedido-item:hover {
+  border-color: var(--purple-l);
+  transform: translateX(4px);
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pedido-id {
+  font-family: 'Courier New', monospace;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--purple-d);
+  background: var(--pink);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.pedido-data {
+  font-size: .75rem;
+  color: var(--gray-d);
+}
+
+.pedido-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 99px;
+  margin-bottom: 10px;
+}
+
+.status-pendente { background: #fff3cd; color: #856404; }
+.status-preparo { background: #cce5ff; color: #004085; }
+.status-entregue { background: #d4edda; color: #155724; }
+.status-cancelado { background: #f8d7da; color: #721c24; }
+
+.pedido-itens {
+  font-size: .85rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.pedido-total {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--purple-d);
+  text-align: right;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.pedido-vazio {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gray-d);
+  font-size: .9rem;
+}
+
+.pedido-vazio span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.loading-pedidos {
+  text-align: center;
+  padding: 30px;
+  color: var(--purple-d);
+  font-size: .9rem;
+}
 
 .cupons-lista{display:flex;flex-direction:column;gap:10px;}
 .cupom-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:var(--r);background:var(--snow);border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,transform .2s;}
@@ -350,9 +516,51 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--purple);color:#fff;padding:10px 24px;border-radius:999px;font-size:.84rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:500;white-space:nowrap;box-shadow:0 6px 20px rgba(213,129,199,.5);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
+/* Animação de loading */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: spin .6s linear infinite;
+}
+
 @media(max-width:840px){.pedido-layout{grid-template-columns:1fr;}.sidebar{position:static;}}
-@media(max-width:680px){.nav-links{display:none;}.search-wrap input{width:110px;}.info-strip{flex-direction:column;}.info-item{border-right:none;border-bottom:1px solid var(--border);}.cart-panel{width:100%;}.form-section{padding:16px 16px 14px;}.form-actions{padding:14px 16px 18px;flex-direction:column;}.btn-submit{min-width:100%;}.status,.itens-aviso,.recibo-section{margin-left:16px;margin-right:16px;}}
+@media(max-width:680px){.nav-links{display:none;}.search-wrap input{width:110px;}.info-strip{flex-direction:column;}.info-item{border-right:none;border-bottom:1px solid var(--border);}.cart-panel{width:100%;}.form-section{padding:16px 16px 14px;}.form-actions{padding:14px 16px 18px;flex-direction:column;}.btn-submit{min-width:100%;}.status,.itens-aviso,.recibo-section{margin-left:16px;margin-right:16px;}.user-dropdown{right:-10px;}}
 @media(max-width:460px){.menu-grid{grid-template-columns:1fr;}.hero-title{font-size:2rem;height:auto;}}
+
+/* Floats */
+.hero-floats,.depo-floats{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
+.hblob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;}
+.hb1{width:400px;height:400px;background:var(--pink);top:-100px;right:-80px;animation:drift 12s ease-in-out infinite;}
+.hb2{width:300px;height:300px;background:var(--purple-l);bottom:-60px;left:-60px;animation:drift 15s ease-in-out infinite reverse;}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+.fe,.df{position:absolute;font-size:2rem;opacity:.2;user-select:none;animation:floatUp 6s ease-in-out infinite;will-change:transform;}
+.fe1{top:8%;left:6%;animation-delay:0s;animation-duration:7s;}
+.fe2{top:65%;left:5%;animation-delay:1.2s;animation-duration:8s;}
+.fe3{top:18%;right:6%;animation-delay:.6s;animation-duration:6.5s;}
+.fe4{top:72%;right:8%;animation-delay:2s;animation-duration:7.5s;}
+.fe5{top:40%;left:2%;animation-delay:3s;animation-duration:9s;}
+.fe6{top:5%;right:20%;animation-delay:1.8s;animation-duration:6s;}
+.fe7{top:52%;right:16%;animation-delay:.4s;animation-duration:8.5s;}
+.fe8{top:82%;left:33%;animation-delay:2.5s;animation-duration:7s;}
+.df1{top:10%;left:4%;animation-delay:0s;animation-duration:8s;}
+.df2{top:60%;left:8%;animation-delay:1.5s;animation-duration:7s;}
+.df3{top:20%;right:5%;animation-delay:.8s;animation-duration:9s;}
+.df4{top:75%;right:7%;animation-delay:2.2s;animation-duration:6.5s;}
+.df5{top:45%;left:3%;animation-delay:3.5s;animation-duration:8s;}
+.df6{top:8%;right:18%;animation-delay:1.2s;animation-duration:7.5s;}
+.df7{top:55%;right:14%;animation-delay:.5s;animation-duration:9.5s;}
+.df8{top:85%;left:45%;animation-delay:2.8s;animation-duration:7s;}
+@keyframes floatUp{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
   </style>
 </head>
 <body>
@@ -419,6 +627,18 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
       </div>
     </div>
     <p class="creditos-footer">Projeto Escolar · Mauá, SP © 2025</p>
+  </div>
+</div>
+
+<!-- Modal de Pedidos do Usuário -->
+<div id="pedidosModal" class="modal-overlay" style="display:none" onclick="closePedidosModal(event)">
+  <div class="modal-box" style="max-width: 520px;">
+    <button class="modal-close" onclick="closePedidosModal()">✕</button>
+    <h2 class="modal-title">📦 Meus Pedidos</h2>
+    <p class="modal-sub">Histórico de pedidos e status</p>
+    <div id="pedidosLista" class="pedidos-lista">
+      <div class="loading-pedidos">Carregando...</div>
+    </div>
   </div>
 </div>
 
@@ -745,7 +965,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 'use strict';
 
 /* ════════════════════════════════════════════════════════════
-   SUPABASE CONFIG - MESMA CHAVE EM TODAS AS PÁGINAS
+   SUPABASE CONFIG
    ════════════════════════════════════════════════════════════ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
@@ -756,7 +976,7 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     storage: window.localStorage,
-    storageKey: 'poffo-auth-token-v1' // VERSÃO ESPECÍFICA PARA EVITAR CONFLITOS
+    storageKey: 'poffo-auth-token-v1'
   }
 });
 
@@ -771,22 +991,20 @@ let authInitialized = false;
 let authCheckAttempts = 0;
 
 /* ════════════════════════════════════════════════════════════
-   INICIALIZAÇÃO DE AUTH - COM RETRY ROBUSTO
+   INICIALIZAÇÃO DE AUTH
    ════════════════════════════════════════════════════════════ */
 async function initAuth() {
   console.log('[Auth] Iniciando verificação...');
   
-  // Tentativa imediata
   let { data: { session } } = await _sb.auth.getSession();
   
   if (session?.user) {
-    console.log('[Auth] Sessão encontrada imediatamente:', session.user.email);
+    console.log('[Auth] Sessão encontrada:', session.user.email);
     await setCurrentUser(session.user);
     authInitialized = true;
     return;
   }
   
-  // Se não achou, tenta mais 3x com intervalo (o Supabase pode estar restaurando do storage)
   const maxAttempts = 3;
   while (authCheckAttempts < maxAttempts && !currentUser) {
     authCheckAttempts++;
@@ -795,23 +1013,20 @@ async function initAuth() {
     
     const { data: { session: retrySession } } = await _sb.auth.getSession();
     if (retrySession?.user) {
-      console.log('[Auth] Sessão encontrada na tentativa', authCheckAttempts);
       await setCurrentUser(retrySession.user);
       break;
     }
   }
   
   if (!currentUser) {
-    console.log('[Auth] Nenhuma sessão ativa após todas as tentativas');
     updateUIForAnonymous();
   }
   
   authInitialized = true;
 }
 
-// Listener para mudanças de estado em TEMPO REAL
 _sb.auth.onAuthStateChange(async (event, session) => {
-  console.log('[Auth] Evento:', event, 'Sessão:', session?.user?.email);
+  console.log('[Auth] Evento:', event);
   
   if (event === 'SIGNED_IN' && session) {
     await setCurrentUser(session.user);
@@ -820,8 +1035,6 @@ _sb.auth.onAuthStateChange(async (event, session) => {
     currentProfile = null;
     updateUIForAnonymous();
     showToast('👋 Você saiu da conta');
-  } else if (event === 'TOKEN_REFRESHED') {
-    console.log('[Auth] Token atualizado');
   }
 });
 
@@ -840,7 +1053,6 @@ async function setCurrentUser(user) {
       currentProfile = null;
     } else {
       currentProfile = profile;
-      console.log('[Auth] Perfil carregado:', profile);
       
       if (profile?.is_banned) {
         showToast('🚷 Conta suspensa. Entre em contato com o suporte.');
@@ -849,29 +1061,14 @@ async function setCurrentUser(user) {
       }
     }
   } catch (e) {
-    console.error('[Auth] Exceção ao buscar perfil:', e);
+    console.error('[Auth] Exceção:', e);
   }
   
   updateUIForLoggedUser();
 }
 
-function updateUIForLoggedUser() {
-  renderNavAuth();
-  updateAuthUI();
-  
-  const nome = currentProfile?.username || currentUser?.email?.split('@')[0] || 'Cliente';
-  if (authInitialized) {
-    showToast(`👋 Bem-vindo de volta, ${nome}!`);
-  }
-}
-
-function updateUIForAnonymous() {
-  renderNavAuth();
-  updateAuthUI();
-}
-
 /* ════════════════════════════════════════════════════════════
-   UI DE AUTENTICAÇÃO
+   UI DE AUTENTICAÇÃO COM DROPDOWN
    ════════════════════════════════════════════════════════════ */
 function renderNavAuth() {
   const area = document.getElementById('navAuth');
@@ -881,12 +1078,60 @@ function renderNavAuth() {
     const username = currentProfile?.username || currentUser.email.split('@')[0];
     const label = escHtml(sanitizeStr(username).slice(0, 20));
     
-    area.innerHTML =
-      `<span class="user-badge" title="${escHtml(currentUser.email)}">😸 ${label}</span>
-       <button class="btn-logout-nav" onclick="doLogout()">Sair</button>`;
+    area.innerHTML = `
+      <div class="user-menu-wrap">
+        <button class="user-btn" onclick="toggleUserMenu(event)">
+          😸 <span>${label}</span> ▼
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header">Olá, ${label}!</div>
+          <button class="dropdown-item" onclick="openPedidosModal()">
+            📦 Meus Pedidos
+          </button>
+          <button class="dropdown-item sair" onclick="doLogout()">
+            🚪 Sair da conta
+          </button>
+        </div>
+      </div>
+    `;
   } else {
     area.innerHTML = `<a class="btn-login-nav" href="login.html">Entrar</a>`;
   }
+}
+
+window.toggleUserMenu = function(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById('userDropdown');
+  if (!dropdown) return;
+  
+  dropdown.classList.toggle('open');
+  
+  if (dropdown.classList.contains('open')) {
+    setTimeout(() => {
+      document.addEventListener('click', function closeMenu(e) {
+        if (!e.target.closest('.user-menu-wrap')) {
+          dropdown.classList.remove('open');
+          document.removeEventListener('click', closeMenu);
+        }
+      });
+    }, 10);
+  }
+};
+
+function updateUIForLoggedUser() {
+  renderNavAuth();
+  updateAuthUI();
+  
+  const nome = currentProfile?.username || currentUser?.email?.split('@')[0] || 'Cliente';
+  if (authInitialized && !window._welcomeShown) {
+    window._welcomeShown = true;
+    showToast(`👋 Bem-vindo, ${nome}!`);
+  }
+}
+
+function updateUIForAnonymous() {
+  renderNavAuth();
+  updateAuthUI();
 }
 
 function updateAuthUI() {
@@ -907,7 +1152,91 @@ window.doLogout = async () => {
 };
 
 /* ════════════════════════════════════════════════════════════
-   RESTO DO CÓDIGO (SANITIZAÇÃO, CARRINHO, ETC)
+   HISTÓRICO DE PEDIDOS
+   ════════════════════════════════════════════════════════════ */
+window.openPedidosModal = async function() {
+  const dropdown = document.getElementById('userDropdown');
+  if (dropdown) dropdown.classList.remove('open');
+  
+  document.getElementById('pedidosModal').style.display = 'flex';
+  await loadUserPedidos();
+};
+
+window.closePedidosModal = function(e) {
+  if (e && e.target !== document.getElementById('pedidosModal')) return;
+  document.getElementById('pedidosModal').style.display = 'none';
+};
+
+async function loadUserPedidos() {
+  const lista = document.getElementById('pedidosLista');
+  
+  if (!currentUser) {
+    lista.innerHTML = '<div class="pedido-vazio"><span>🔒</span>Faça login para ver seus pedidos</div>';
+    return;
+  }
+  
+  try {
+    const { data: pedidos, error } = await _sb
+      .from('pedidos')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('criado_em', { ascending: false })
+      .limit(20);
+    
+    if (error) throw error;
+    
+    if (!pedidos || pedidos.length === 0) {
+      lista.innerHTML = '<div class="pedido-vazio"><span>📦</span>Você ainda não fez nenhum pedido.<br>Que tal fazer seu primeiro pedido?</div>';
+      return;
+    }
+    
+    lista.innerHTML = '';
+    pedidos.forEach(pedido => {
+      const div = document.createElement('div');
+      div.className = 'pedido-item';
+      
+      const data = new Date(pedido.criado_em).toLocaleDateString('pt-BR');
+      const hora = new Date(pedido.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const shortId = pedido.id.slice(0, 8).toUpperCase();
+      
+      const statusClass = {
+        'pendente': 'status-pendente',
+        'preparo': 'status-preparo',
+        'entregue': 'status-entregue',
+        'cancelado': 'status-cancelado'
+      }[pedido.status] || 'status-pendente';
+      
+      const statusIcon = {
+        'pendente': '⏳',
+        'preparo': '👨‍🍳',
+        'entregue': '✅',
+        'cancelado': '❌'
+      }[pedido.status] || '📋';
+      
+      div.innerHTML = `
+        <div class="pedido-header">
+          <span class="pedido-id">#${escHtml(shortId)}</span>
+          <span class="pedido-data">${data} às ${hora}</span>
+        </div>
+        <div class="pedido-status ${statusClass}">
+          ${statusIcon} ${escHtml(pedido.status.toUpperCase())}
+        </div>
+        <div class="pedido-itens">${escHtml(pedido.itens || 'Itens não disponíveis')}</div>
+        ${pedido.cupom ? `<div style="font-size: .75rem; color: var(--purple-d); margin-bottom: 4px;">🎀 Cupom: ${escHtml(pedido.cupom)}</div>` : ''}
+        <div class="pedido-total">Total: R$ ${parseFloat(pedido.total).toFixed(2).replace('.', ',')}</div>
+      `;
+      
+      lista.appendChild(div);
+    });
+    
+  } catch (err) {
+    console.error('Erro ao carregar pedidos:', err);
+    lista.innerHTML = '<div class="pedido-vazio"><span>❌</span>Erro ao carregar pedidos.<br>Tente novamente mais tarde.</div>';
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   UTILITÁRIOS
    ════════════════════════════════════════════════════════════ */
 const BAD = /[<>"'`;\\]/g;
 function sanitizeStr(s){ return (s||'').replace(BAD,'').trim(); }
@@ -922,6 +1251,9 @@ window.addEventListener('scroll', function () {
   if (bar) bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
 }, { passive: true });
 
+/* ════════════════════════════════════════════════════════════
+   CARREGAMENTO DE IMAGENS E ANIMAÇÕES
+   ════════════════════════════════════════════════════════════ */
 function loadProductImages() {
   document.querySelectorAll('.menu-card').forEach(function(card) {
     var slug  = card.dataset.img;
@@ -1014,6 +1346,9 @@ typeNext();
   if (tag) tag.textContent = 'Hoje em destaque: ' + items[new Date().getDate() % items.length];
 })();
 
+/* ════════════════════════════════════════════════════════════
+   CARDÁPIO E CARRINHO
+   ════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.menu-tab').forEach(function (tab) {
   tab.addEventListener('click', function () {
     document.querySelectorAll('.menu-tab').forEach(function (t) { t.classList.remove('active'); });
@@ -1212,6 +1547,9 @@ window.toggleCart = function () {
   document.getElementById('cartOverlay').classList.toggle('open', !open);
 };
 
+/* ════════════════════════════════════════════════════════════
+   CUPONS
+   ════════════════════════════════════════════════════════════ */
 var DEFAULT_COUPONS = [
   { code: 'POFFO10',  desc: '10% de desconto no pedido', type: 'pct', value: 10, used: false },
   { code: 'POFFO15',  desc: '15% de desconto no pedido', type: 'pct', value: 15, used: false },
@@ -1357,24 +1695,54 @@ function openConfirmModal(payload) {
   window._pendingPayload = payload;
 }
 
+/* ════════════════════════════════════════════════════════════
+   ENVIO DE PEDIDO (CORRIGIDO)
+   ════════════════════════════════════════════════════════════ */
 async function sbInsertPedido(payload) {
-  var t = calcTotals();
+  const t = calcTotals();
   
-  var row = {
-    user_id:  currentUser ? currentUser.id : null,
-    username: currentProfile?.username || (currentUser ? currentUser.email.split('@')[0] : 'Anônimo'),
-    endereco: sanitizeStr(payload.endereco).slice(0,200),
-    itens:    sanitizeStr(payload.itens).slice(0,500),
-    cupom:    payload.cupom && payload.cupom !== '–' ? sanitizeStr(payload.cupom).slice(0,20) : null,
+  // Validações rigorosas
+  if (!currentUser) throw new Error('Usuário não autenticado');
+  
+  const username = currentProfile?.username || currentUser.email.split('@')[0];
+  if (!username || username.trim().length < 1) {
+    throw new Error('Nome de usuário inválido');
+  }
+  
+  if (!payload.endereco || payload.endereco.trim().length < 5) {
+    throw new Error('Endereço inválido');
+  }
+  
+  const row = {
+    user_id: currentUser.id,
+    username: username.trim().slice(0, 40),
+    endereco: sanitizeStr(payload.endereco).slice(0, 200),
+    itens: sanitizeStr(payload.itens).slice(0, 500),
+    cupom: (payload.cupom && payload.cupom !== '–') ? sanitizeStr(payload.cupom).slice(0, 20) : null,
     subtotal: parseFloat(t.sub.toFixed(2)),
     desconto: parseFloat(t.disc.toFixed(2)),
-    total:    parseFloat(t.total.toFixed(2)),
-    status:   'pendente',
-    origem:   'web'
+    total: parseFloat(t.total.toFixed(2)),
+    status: 'pendente',
+    origem: 'web'
   };
   
-  var { data, error } = await _sb.from('pedidos').insert([row]).select().single();
-  if (error) throw error;
+  console.log('[Pedido] Enviando:', row);
+  
+  const { data, error } = await _sb
+    .from('pedidos')
+    .insert([row])
+    .select()
+    .single();
+  
+  if (error) {
+    console.error('[Pedido] Erro Supabase:', error);
+    throw new Error(error.message || 'Erro ao inserir pedido');
+  }
+  
+  if (!data) {
+    throw new Error('Nenhum dado retornado após inserção');
+  }
+  
   return data;
 }
 
@@ -1382,7 +1750,8 @@ var form = document.getElementById('pedidoForm');
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   var statusEl = document.getElementById('status');
-  statusEl.textContent = ''; statusEl.className = 'status';
+  statusEl.textContent = ''; 
+  statusEl.className = 'status';
   document.getElementById('itensAviso').style.display = 'none';
 
   if (!currentUser) {
@@ -1394,15 +1763,32 @@ form.addEventListener('submit', function (e) {
   }
 
   var endRaw = (document.getElementById('endereco').value || '').trim();
-  if (endRaw.length < 5) { statusEl.textContent = '⚠️ Preencha o Endereço (mínimo 5 caracteres).'; statusEl.classList.add('error'); return; }
+  if (endRaw.length < 5) { 
+    statusEl.textContent = '⚠️ Preencha o Endereço (mínimo 5 caracteres).'; 
+    statusEl.classList.add('error'); 
+    return; 
+  }
+  
   if (!carrinho.length) {
     document.getElementById('itensAviso').style.display = 'block';
     document.getElementById('itensAviso').scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-  var endereco  = sanitizeStr(endRaw).slice(0, 200);
-  var itensList = carrinho.map(function(i){ return sanitizeStr(i.nome) + ' (' + fmtR(i.preco) + ')'; }).join('; ');
-  openConfirmModal({ endereco: endereco, itens: itensList, cupom: cupomAtivo ? sanitizeStr(cupomAtivo.code) : '–' });
+  
+  var endereco = sanitizeStr(endRaw).slice(0, 200);
+  var itensList = carrinho.map(function(i) { 
+    return sanitizeStr(i.nome) + ' (R$ ' + i.preco.toFixed(2).replace('.', ',') + ')'; 
+  }).join(', ');
+  
+  var cupomCode = cupomAtivo ? sanitizeStr(cupomAtivo.code) : '–';
+  
+  window._pendingPayload = { 
+    endereco: endereco, 
+    itens: itensList, 
+    cupom: cupomCode 
+  };
+  
+  openConfirmModal(window._pendingPayload);
 });
 
 window.doSubmitFinal = async function () {
@@ -1414,26 +1800,64 @@ window.doSubmitFinal = async function () {
   }
   
   var submitBtn = document.getElementById('submitBtn');
-  var statusEl  = document.getElementById('status');
-  submitBtn.disabled = true; submitBtn.textContent = '⏳ Enviando...';
+  var statusEl = document.getElementById('status');
+  
+  submitBtn.disabled = true; 
+  submitBtn.innerHTML = '⏳ Enviando...';
+  submitBtn.classList.add('btn-loading');
+  
   try {
+    if (!carrinho.length) {
+      throw new Error('Carrinho vazio');
+    }
+    
     var pedido = await sbInsertPedido(window._pendingPayload);
-    if (cupomAtivo) await markCouponUsed(cupomAtivo.code);
-    var shortId = escHtml(pedido.id.slice(0,8).toUpperCase());
-    statusEl.textContent = '✅ Pedido #' + shortId + ' enviado! Entrega em até 45 minutos.';
+    
+    if (cupomAtivo) {
+      try {
+        await markCouponUsed(cupomAtivo.code);
+      } catch (cupomErr) {
+        console.warn('[Pedido] Erro ao marcar cupom:', cupomErr);
+      }
+    }
+    
+    var shortId = escHtml(pedido.id.slice(0, 8).toUpperCase());
+    statusEl.innerHTML = '✅ Pedido <strong>#' + shortId + '</strong> enviado!<br>Entrega em até 45 minutos.';
     statusEl.classList.add('success');
+    
     form.reset();
-    carrinho = []; cupomAtivo = null;
-    var ci = document.getElementById('cupomInput'); if (ci) ci.value = '';
-    var cs = document.getElementById('cupomStatus'); if (cs) { cs.textContent = ''; cs.className = 'cupom-status'; }
-    atualizarUI(); confettiBurst();
-    var s4 = document.getElementById('step4'); if (s4) s4.classList.add('done');
+    carrinho = []; 
+    cupomAtivo = null;
+    
+    var ci = document.getElementById('cupomInput'); 
+    if (ci) ci.value = '';
+    
+    var cs = document.getElementById('cupomStatus'); 
+    if (cs) { 
+      cs.textContent = ''; 
+      cs.className = 'cupom-status'; 
+    }
+    
+    atualizarUI(); 
+    confettiBurst();
+    
+    var s4 = document.getElementById('step4'); 
+    if (s4) s4.classList.add('done');
+    
+    var l3 = document.getElementById('line3');
+    if (l3) l3.classList.add('done');
+    
+    showToast('🎉 Pedido enviado com sucesso!');
+    
   } catch (err) {
-    console.error(err);
-    statusEl.textContent = '❌ Erro ao enviar pedido. Verifique sua conexão.';
+    console.error('[Pedido] Erro:', err);
+    statusEl.textContent = '❌ ' + (err.message || 'Erro ao enviar pedido. Verifique sua conexão e tente novamente.');
     statusEl.classList.add('error');
+    showToast('❌ Erro ao enviar pedido');
   } finally {
-    submitBtn.disabled = false; submitBtn.textContent = 'Enviar Pedido';
+    submitBtn.disabled = false; 
+    submitBtn.textContent = 'Enviar Pedido';
+    submitBtn.classList.remove('btn-loading');
   }
 };
 
