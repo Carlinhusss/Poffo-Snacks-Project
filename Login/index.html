@@ -638,18 +638,21 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
 });
 
 /* ══ REDIRECT IF ALREADY LOGGED IN ══ */
+const REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/';
+
+function goHome() {
+  window.location.replace(REDIRECT_URL);
+}
+
 (async () => {
   const { data: { session } } = await _sb.auth.getSession();
-  if (session) {
-    window.location.replace('https://poffo-snacks-site.vercel.app/');
-  }
+  if (session) goHome();
 })();
 
-/* Listen for OAuth redirect */
-_sb.auth.onAuthStateChange((_event, session) => {
-  if (session) {
+_sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
     showToast('✅ Login realizado! Redirecionando...');
-    setTimeout(() => { window.location.replace('https://poffo-snacks-site.vercel.app/'); }, 900);
+    setTimeout(goHome, 700);
   }
 });
 
