@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
 /* ============================================================
-   Poffo Snacks — Login Page
+   Poffo Snacks — Login Page (Compatível com Schema v2)
    ============================================================ */
 :root {
   --pink:      #FFE0FB;
@@ -134,6 +134,7 @@ body {
 }
 @keyframes popIn { from{transform:scale(.92) translateY(20px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
 
+/* decorative top strip */
 .auth-card::before {
   content: '';
   position: absolute;
@@ -240,6 +241,7 @@ body {
 .input-wrap input::placeholder { color: var(--gray); }
 .input-wrap input.err { border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231,76,60,.1); }
 
+/* password toggle */
 .toggle-pw {
   position: absolute;
   right: 12px;
@@ -543,6 +545,12 @@ body {
       </div>
       <div class="msg" id="loginMsg"></div>
 
+      <div class="divider">ou</div>
+
+      <button class="btn-google" onclick="loginGoogle()">
+        <span class="google-icon">🔍</span> Entrar com Google
+      </button>
+
       <div class="switch-mode">
         Não tem conta? <a onclick="switchTab('signup')">Criar conta →</a>
       </div>
@@ -556,10 +564,6 @@ body {
           <span class="flabel">Nome / apelido</span>
           <div class="input-wrap">
             <span class="icon">😸</span>
-            <!--
-              maxlength="30" — o trigger handle_new_user() usa left(v_username, 40),
-              então 30 chars no front garante margem segura.
-            -->
             <input id="signupName" type="text" placeholder="Como devemos te chamar?" maxlength="30" autocomplete="name" oninput="clearErr(this)"/>
           </div>
         </div>
@@ -628,130 +632,37 @@ body {
 <script>
 'use strict';
 
-/* ══════════════════════════════════════════════════════════════
-   CONFIGURAÇÃO SUPABASE
-   Projeto: Poffo Snacks (banco novo).
-   persistSession:true  → token sobrevive ao reload da página.
-   detectSessionInUrl:true → necessário para ler o hash de
-   recuperação de senha que o Supabase embute na URL de retorno.
-══════════════════════════════════════════════════════════════ */
+/* ══ SUPABASE CONFIG ══ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
 
+// Inicializa cliente Supabase
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
+    storage: localStorage // 'remember me' functionality
   }
 });
 
-/* ══════════════════════════════════════════════════════════════
-   URLs CENTRALIZADAS
-   Altere apenas aqui caso o domínio mude.
-
-   REDIRECT_URL → destino após login / cadastro confirmado.
-   RESET_URL    → destino do link "redefinir senha" enviado
-                  por e-mail. Deve ser uma rota do seu app que
-                  trate o #access_token na URL e chame:
-                    _sb.auth.updateUser({ password: novaSenha })
-                  CORREÇÃO vs. versão anterior: antes era
-                  window.location.origin + '/index.html', que
-                  gerava 404 no Vercel. Agora usa a rota correta.
-══════════════════════════════════════════════════════════════ */
+/* ══ CONSTANTES ══ */
 const REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/';
-const RESET_URL    = 'https://poffo-snacks-site.vercel.app/reset-senha';
+const ADMIN_REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/admin.html'; // Opcional: página de admin
 
-/* ── Redireciona se já estiver logado ── */
-(async () => {
-  const { data: { session } } = await _sb.auth.getSession();
-  if (session) goHome();
-})();
-
-/* ── Ouve mudanças de sessão (inclui callback OAuth) ── */
-_sb.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_IN' && session) {
-    showToast('✅ Login realizado! Redirecionando...');
-    setTimeout(goHome, 700);
-  }
-});
-
-function goHome() {
-  window.location.replace(REDIRECT_URL);
-}
-
-/* ══════════════════════════════════════════════════════════════
-   SANITIZAÇÃO — remove chars que causam XSS ou quebram queries
-══════════════════════════════════════════════════════════════ */
+/* ══ HELPERS ══ */
 const BAD = /[<>"'`;\\]/g;
 function sanitize(s) { return (s || '').replace(BAD, '').trim(); }
 
-/* ══════════════════════════════════════════════════════════════
-   TABS
-══════════════════════════════════════════════════════════════ */
-window.switchTab = function(tab) {
-  ['login','signup'].forEach(t => {
-    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
-    document.getElementById('panel-' + t).classList.toggle('active', t === tab);
-  });
-  clearMsgs();
-};
-
-function clearMsgs() {
-  ['loginMsg','signupMsg'].forEach(id => {
-    var el = document.getElementById(id);
-    if (el) { el.className = 'msg'; el.textContent = ''; }
-  });
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; 
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-/* ══════════════════════════════════════════════════════════════
-   HELPERS DE UI
-══════════════════════════════════════════════════════════════ */
-function showMsg(id, text, type) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = text;
-  el.className = 'msg ' + type;
-}
-
-window.clearErr = function(input) { input.classList.remove('err'); };
-
-window.togglePw = function(inputId, btn) {
-  var inp = document.getElementById(inputId);
-  if (!inp) return;
-  var isText = inp.type === 'text';
-  inp.type = isText ? 'password' : 'text';
-  btn.textContent = isText ? '👁️' : '🙈';
-};
-
-/* ══════════════════════════════════════════════════════════════
-   FORÇA DA SENHA
-══════════════════════════════════════════════════════════════ */
-window.checkStrength = function(pw) {
-  var wrap  = document.getElementById('pwStrength');
-  var label = document.getElementById('pwLabel');
-  var bars  = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
-  if (!pw) { wrap.style.display = 'none'; return; }
-  wrap.style.display = 'block';
-
-  var score = 0;
-  if (pw.length >= 6)  score++;
-  if (pw.length >= 10) score++;
-  if (/[A-Z]/.test(pw) || /[0-9]/.test(pw) || /[^a-zA-Z0-9]/.test(pw)) score++;
-
-  var levels = ['weak','medium','strong'];
-  var labels = ['Fraca','Média','Forte'];
-  bars.forEach((b, i) => {
-    b.className = 'pw-bar' + (i < score ? ' ' + levels[score - 1] : '');
-  });
-  label.textContent = 'Senha: ' + labels[score - 1];
-};
-
-/* ══════════════════════════════════════════════════════════════
-   ESTADO DE CARREGAMENTO
-══════════════════════════════════════════════════════════════ */
 function setLoading(btnId, loading) {
-  var btn = document.getElementById(btnId);
+  const btn = document.getElementById(btnId);
   if (!btn) return;
   btn.disabled = loading;
   if (loading) {
@@ -762,151 +673,368 @@ function setLoading(btnId, loading) {
   }
 }
 
-/* ══════════════════════════════════════════════════════════════
-   LOGIN POR E-MAIL / SENHA
-   Após sucesso, onAuthStateChange detecta SIGNED_IN → goHome().
-══════════════════════════════════════════════════════════════ */
-window.doLogin = async function() {
-  var email = sanitize(document.getElementById('loginEmail').value);
-  var pw    = document.getElementById('loginPw').value;
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
 
-  if (!email) { document.getElementById('loginEmail').classList.add('err'); showMsg('loginMsg','⚠️ Preencha o e-mail.','err'); return; }
-  if (!pw)    { document.getElementById('loginPw').classList.add('err');    showMsg('loginMsg','⚠️ Preencha a senha.','err'); return; }
+function clearMsgs() {
+  ['loginMsg','signupMsg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.className = 'msg'; el.textContent = ''; }
+  });
+}
+
+/* ══ VERIFICAÇÃO DE SESSÃO E PERFIL ══ 
+   Importante: O novo schema tem a tabela 'profiles' que é populada
+   automaticamente pelo trigger handle_new_user(). Aqui verificamos
+   se o usuário logado tem perfil completo e sua role.
+*/
+async function checkUserProfile(session) {
+  if (!session || !session.user) return null;
+  
+  try {
+    // Busca perfil na tabela profiles (compatível com schema novo)
+    const { data: profile, error } = await _sb
+      .from('profiles')
+      .select('username, role, xp, is_banned')
+      .eq('id', session.user.id)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') {
+      console.error('Erro ao buscar perfil:', error);
+    }
+    
+    // Se usuário está banido (conforme schema logs_bot/RLS)
+    if (profile?.is_banned) {
+      await _sb.auth.signOut();
+      showMsg('loginMsg', '🚷 Conta suspensa temporariamente.', 'err');
+      return null;
+    }
+    
+    return profile;
+  } catch (e) {
+    console.error('Erro ao verificar perfil:', e);
+    return null;
+  }
+}
+
+/* ══ REDIRECIONAMENTO INTELIGENTE ══ 
+   Baseado no schema, verifica se é admin para redirecionar
+   para área administrativa se necessário.
+*/
+async function handlePostLoginRedirect(session) {
+  const profile = await checkUserProfile(session);
+  
+  if (!profile) {
+    // Se não achou perfil, pode ser delay do trigger. Aguarda um pouco e tenta novamente
+    setTimeout(() => {
+      window.location.replace(REDIRECT_URL);
+    }, 1000);
+    return;
+  }
+  
+  // Verifica role para redirecionamento específico (conforme schema profiles.role)
+  if (profile.role === 'admin' || profile.role === 'staff') {
+    showToast(`👋 Bem-vindo, ${profile.username}! (Admin)`);
+    setTimeout(() => {
+      // window.location.replace(ADMIN_REDIRECT_URL); // Descomente se tiver página de admin
+      window.location.replace(REDIRECT_URL);
+    }, 900);
+  } else {
+    showToast(`✅ Login realizado! Bem-vindo, ${profile.username}`);
+    setTimeout(() => {
+      window.location.replace(REDIRECT_URL);
+    }, 900);
+  }
+}
+
+/* ══ INICIALIZAÇÃO ══ */
+(async () => {
+  // Verifica se já existe sessão ativa
+  const { data: { session } } = await _sb.auth.getSession();
+  
+  if (session) {
+    // Verifica perfil antes de redirecionar
+    await checkUserProfile(session);
+    // Se chegou aqui, está logado (não banido)
+    // window.location.replace(REDIRECT_URL); // Opcional: auto-redirect se já logado
+  }
+  
+  // Listener para mudanças de auth (login em outra aba, logout, etc)
+  _sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      showToast('✅ Login realizado! Verificando perfil...');
+      await handlePostLoginRedirect(session);
+    }
+    if (event === 'SIGNED_OUT') {
+      console.log('Usuário deslogado');
+    }
+  });
+})();
+
+/* ══ NAVEGAÇÃO/TABS ══ */
+window.switchTab = function(tab) {
+  ['login','signup'].forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('panel-' + t).classList.toggle('active', t === tab);
+  });
+  clearMsgs();
+};
+
+window.clearErr = function(input) {
+  input.classList.remove('err');
+};
+
+window.togglePw = function(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const isText = inp.type === 'text';
+  inp.type = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁️' : '🙈';
+  btn.setAttribute('aria-label', isText ? 'Mostrar senha' : 'Ocultar senha');
+};
+
+window.checkStrength = function(pw) {
+  const wrap = document.getElementById('pwStrength');
+  const label = document.getElementById('pwLabel');
+  const bars = [
+    document.getElementById('bar1'), 
+    document.getElementById('bar2'), 
+    document.getElementById('bar3')
+  ];
+  
+  if (!pw) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+
+  let score = 0;
+  if (pw.length >= 6)  score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw) || /[0-9]/.test(pw) || /[^a-zA-Z0-9]/.test(pw)) score++;
+
+  const levels = ['weak','medium','strong'];
+  const labels = ['Fraca','Média','Forte'];
+  
+  bars.forEach((b, i) => {
+    b.className = 'pw-bar' + (i < score ? ' ' + levels[score - 1] : '');
+  });
+  label.textContent = score > 0 ? 'Senha: ' + labels[score - 1] : '';
+};
+
+/* ══ LOGIN COM GOOGLE ══ 
+   Compatível com o schema: cria profile via trigger automaticamente
+*/
+window.loginGoogle = async function() {
+  try {
+    const { error } = await _sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { 
+        redirectTo: REDIRECT_URL,
+        // Força a seleção de conta para evitar login automático indesejado
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account'
+        }
+      }
+    });
+    if (error) throw error;
+  } catch (err) {
+    console.error('Erro Google OAuth:', err);
+    showToast('❌ Erro ao entrar com Google: ' + err.message);
+  }
+};
+
+/* ══ LOGIN COM EMAIL/SENHA ══ 
+   Integra com tabela profiles via RLS (usuário só vê próprio perfil)
+*/
+window.doLogin = async function() {
+  const email = sanitize(document.getElementById('loginEmail').value);
+  const pw = document.getElementById('loginPw').value;
+  const rememberMe = document.getElementById('rememberMe').checked;
+
+  // Validação
+  if (!email) { 
+    document.getElementById('loginEmail').classList.add('err'); 
+    showMsg('loginMsg','⚠️ Preencha o e-mail.','err'); 
+    return; 
+  }
+  if (!pw) { 
+    document.getElementById('loginPw').classList.add('err'); 
+    showMsg('loginMsg','⚠️ Preencha a senha.','err'); 
+    return; 
+  }
 
   setLoading('btnLogin', true);
   showMsg('loginMsg', '', '');
 
   try {
-    const { error } = await _sb.auth.signInWithPassword({ email, password: pw });
-    if (error) {
-      var msg = error.message.toLowerCase().includes('invalid') || error.message.toLowerCase().includes('credentials')
-        ? '❌ E-mail ou senha incorretos.'
-        : '❌ ' + error.message;
-      showMsg('loginMsg', msg, 'err');
-    } else {
-      showMsg('loginMsg', '✅ Login realizado! Redirecionando...', 'ok');
-      setTimeout(() => window.location.replace(REDIRECT_URL), 900);
+    // Configura persistência baseada no "Remember me"
+    if (!rememberMe) {
+      // Usa sessionStorage para não persistir entre sessões de navegador
+      _sb.auth.setSession = null; // Será tratado pelo listener
     }
-  } catch {
+
+    const { data, error } = await _sb.auth.signInWithPassword({ 
+      email, 
+      password: pw 
+    });
+    
+    if (error) {
+      let msg = '❌ ' + error.message;
+      if (error.message.toLowerCase().includes('invalid') || 
+          error.message.toLowerCase().includes('credentials')) {
+        msg = '❌ E-mail ou senha incorretos.';
+      }
+      if (error.message.toLowerCase().includes('email not confirmed')) {
+        msg = '📧 Confirme seu e-mail antes de fazer login.';
+      }
+      showMsg('loginMsg', msg, 'err');
+      setLoading('btnLogin', false);
+      return;
+    }
+
+    // Sucesso - o onAuthStateChange vai lidar com o redirecionamento
+    showMsg('loginMsg', '✅ Autenticado! Carregando perfil...', 'ok');
+    
+  } catch (err) {
+    console.error('Erro login:', err);
     showMsg('loginMsg', '❌ Erro de conexão. Tente novamente.', 'err');
-  } finally {
     setLoading('btnLogin', false);
   }
 };
 
-/* ══════════════════════════════════════════════════════════════
-   CADASTRO (SIGNUP)
-
-   Fluxo no banco novo (automático, sem código extra no front):
-   1. signUp() cria o usuário em auth.users
-   2. Trigger handle_new_user() executa no servidor e insere
-      uma linha em public.profiles com:
-        id       = auth.uid()
-        username = raw_user_meta_data->>'username'  ← enviado abaixo
-        role     = 'customer'  (padrão do banco)
-        xp       = 0           (padrão do banco)
-   3. Usuário recebe e-mail de confirmação → redireciona para
-      REDIRECT_URL (emailRedirectTo).
-
-   IMPORTANTE: a chave 'username' em options.data deve bater
-   exatamente com NEW.raw_user_meta_data->>'username' no SQL.
-══════════════════════════════════════════════════════════════ */
+/* ══ CADASTRO ══ 
+   Compatível com schema: insere na auth.users, trigger cria profile automaticamente.
+   Passa username nos user_metadata conforme esperado pelo handle_new_user()
+*/
 window.doSignup = async function() {
-  var name  = sanitize(document.getElementById('signupName').value).slice(0, 30);
-  var email = sanitize(document.getElementById('signupEmail').value);
-  var pw    = document.getElementById('signupPw').value;
-  var pw2   = document.getElementById('signupPwConf').value;
+  const name = sanitize(document.getElementById('signupName').value).slice(0, 30);
+  const email = sanitize(document.getElementById('signupEmail').value);
+  const pw = document.getElementById('signupPw').value;
+  const pw2 = document.getElementById('signupPwConf').value;
 
-  var ok = true;
-  if (!name)  { document.getElementById('signupName').classList.add('err');    ok = false; }
-  if (!email) { document.getElementById('signupEmail').classList.add('err');   ok = false; }
-  if (!pw)    { document.getElementById('signupPw').classList.add('err');      ok = false; }
-  if (!pw2)   { document.getElementById('signupPwConf').classList.add('err');  ok = false; }
-  if (!ok)    { showMsg('signupMsg', '⚠️ Preencha todos os campos.', 'err'); return; }
-  if (pw.length < 6) { showMsg('signupMsg', '⚠️ A senha deve ter pelo menos 6 caracteres.', 'err'); return; }
-  if (pw !== pw2)    { showMsg('signupMsg', '⚠️ As senhas não coincidem.', 'err'); return; }
+  // Validações
+  let ok = true;
+  if (!name) { 
+    document.getElementById('signupName').classList.add('err'); 
+    ok = false; 
+  }
+  if (!email) { 
+    document.getElementById('signupEmail').classList.add('err'); 
+    ok = false; 
+  }
+  if (!pw) { 
+    document.getElementById('signupPw').classList.add('err'); 
+    ok = false; 
+  }
+  if (!pw2) { 
+    document.getElementById('signupPwConf').classList.add('err'); 
+    ok = false; 
+  }
+  
+  if (!ok) {
+    showMsg('signupMsg', '⚠️ Preencha todos os campos.', 'err');
+    return;
+  }
+  
+  if (pw.length < 6) {
+    showMsg('signupMsg', '⚠️ A senha deve ter pelo menos 6 caracteres.', 'err');
+    return;
+  }
+  if (pw !== pw2) {
+    showMsg('signupMsg', '⚠️ As senhas não coincidem.', 'err');
+    return;
+  }
 
   setLoading('btnSignup', true);
   showMsg('signupMsg', '', '');
 
   try {
-    const { error } = await _sb.auth.signUp({
+    const { data, error } = await _sb.auth.signUp({
       email,
       password: pw,
       options: {
-        /* 'username' = chave lida pelo trigger handle_new_user()
-           via NEW.raw_user_meta_data->>'username'              */
-        data: { username: name },
-        /* Após confirmar o e-mail, Supabase redireciona aqui   */
+        // Dados passados para o trigger handle_new_user() criar o profile
+        data: { 
+          username: name,
+          // Opcional: avatar padrão pode ser definido aqui
+          avatar_url: null 
+        },
         emailRedirectTo: REDIRECT_URL
       }
     });
-
+    
     if (error) {
-      var msg = error.message.toLowerCase().includes('already registered')
-        ? '❌ Este e-mail já possui uma conta. Tente fazer login.'
-        : '❌ ' + error.message;
+      let msg = '❌ ' + error.message;
+      if (error.message.toLowerCase().includes('already registered') || 
+          error.message.toLowerCase().includes('user already registered')) {
+        msg = '❌ Este e-mail já possui uma conta. Tente fazer login.';
+      }
       showMsg('signupMsg', msg, 'err');
+      setLoading('btnSignup', false);
+      return;
+    }
+
+    // Verifica se confirmação de email é necessária
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      // Usuário já existia
+      showMsg('signupMsg', '❌ Este e-mail já está cadastrado.', 'err');
+    } else if (data.session) {
+      // Auto-login ativado (email confirm disabled no Supabase)
+      showMsg('signupMsg', '✅ Conta criada! Redirecionando...', 'ok');
+      // onAuthStateChange vai redirecionar
     } else {
-      showMsg('signupMsg',
-        '✅ Conta criada! Verifique seu e-mail para confirmar, depois faça login.',
+      // Email confirmation necessária
+      showMsg('signupMsg', 
+        '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro.', 
         'ok');
       setTimeout(() => switchTab('login'), 3000);
     }
-  } catch {
+    
+  } catch (err) {
+    console.error('Erro cadastro:', err);
     showMsg('signupMsg', '❌ Erro de conexão. Tente novamente.', 'err');
   } finally {
     setLoading('btnSignup', false);
   }
 };
 
-/* ══════════════════════════════════════════════════════════════
-   RECUPERAÇÃO DE SENHA
-
-   CORREÇÃO vs. versão anterior:
-   — Antes: redirectTo = window.location.origin + '/index.html'
-     Problema: no deploy Vercel não existe /index.html →
-     link no e-mail levava a 404.
-   — Agora:  redirectTo = RESET_URL, que aponta para a rota
-     /reset-senha do seu app, onde o usuário digita a nova
-     senha e o front chama:
-       _sb.auth.updateUser({ password: novaSenha })
-     (o Supabase já valida o token que vem na URL).
-══════════════════════════════════════════════════════════════ */
+/* ══ RECUPERAÇÃO DE SENHA ══ */
 window.openForgot = async function() {
-  var email = sanitize(document.getElementById('loginEmail').value);
+  const email = sanitize(document.getElementById('loginEmail').value);
   if (!email) {
     showMsg('loginMsg', '⚠️ Digite seu e-mail acima antes de recuperar a senha.', 'err');
     document.getElementById('loginEmail').focus();
     return;
   }
+  
   try {
     const { error } = await _sb.auth.resetPasswordForEmail(email, {
-      redirectTo: RESET_URL
+      redirectTo: window.location.origin + '/reset-password.html' // Crie esta página
     });
-    if (error) showMsg('loginMsg', '❌ ' + error.message, 'err');
-    else showMsg('loginMsg', '📧 E-mail de recuperação enviado! Verifique sua caixa de entrada.', 'ok');
-  } catch {
+    
+    if (error) {
+      showMsg('loginMsg', '❌ ' + error.message, 'err');
+    } else {
+      showMsg('loginMsg', '📧 E-mail de recuperação enviado! Verifique sua caixa de entrada (e spam).', 'ok');
+    }
+  } catch (err) {
     showMsg('loginMsg', '❌ Erro ao enviar. Tente novamente.', 'err');
   }
 };
 
-/* ══════════════════════════════════════════════════════════════
-   ATALHOS DE TECLADO
-══════════════════════════════════════════════════════════════ */
-document.getElementById('loginPw').addEventListener('keydown',      e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('loginEmail').addEventListener('keydown',   e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('signupPwConf').addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
-
-/* ══════════════════════════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════════════════════════ */
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2400);
-}
+/* ══ EVENTOS DE TECLADO ══ */
+document.getElementById('loginPw')?.addEventListener('keydown', e => { 
+  if (e.key === 'Enter') doLogin(); 
+});
+document.getElementById('loginEmail')?.addEventListener('keydown', e => { 
+  if (e.key === 'Enter') doLogin(); 
+});
+document.getElementById('signupPwConf')?.addEventListener('keydown', e => { 
+  if (e.key === 'Enter') doSignup(); 
+});
 </script>
 </body>
 </html>
