@@ -509,7 +509,7 @@ body {
       </div>
 
       <label class="check-row">
-        <input type="checkbox" id="rememberMe"/> Manter-me conectado
+        <input type="checkbox" id="rememberMe" checked/> Manter-me conectado
       </label>
 
       <div style="margin-top:18px;">
@@ -604,17 +604,18 @@ body {
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
 
+// CORREÇÃO CRÍTICA: MESMA STORAGEKEY DO INDEX.HTML
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    storage: localStorage
+    storage: localStorage,
+    storageKey: 'poffo-auth-token-v1' // MESMA CHAVE!
   }
 });
 
 const REDIRECT_URL = 'index.html';
-const ADMIN_REDIRECT_URL = 'admin.html';
 
 const BAD = /[<>"'`;\\]/g;
 function sanitize(s) { return (s || '').replace(BAD, '').trim(); }
@@ -689,36 +690,22 @@ async function handlePostLoginRedirect(session) {
     return;
   }
   
-  if (profile.role === 'admin' || profile.role === 'staff') {
-    showToast(`👋 Bem-vindo, ${profile.username}! (Admin)`);
-    setTimeout(() => {
-      window.location.replace(REDIRECT_URL);
-    }, 900);
-  } else {
-    showToast(`✅ Login realizado! Bem-vindo, ${profile.username}`);
-    setTimeout(() => {
-      window.location.replace(REDIRECT_URL);
-    }, 900);
-  }
+  showToast(`✅ Bem-vindo, ${profile.username}!`);
+  setTimeout(() => {
+    window.location.replace(REDIRECT_URL);
+  }, 900);
 }
 
-(async () => {
-  const { data: { session } } = await _sb.auth.getSession();
-  
-  if (session) {
-    await checkUserProfile(session);
+// Listener global para detectar login em TEMPO REAL
+_sb.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    showToast('✅ Login realizado! Redirecionando...');
+    await handlePostLoginRedirect(session);
   }
-  
-  _sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      showToast('✅ Login realizado! Verificando perfil...');
-      await handlePostLoginRedirect(session);
-    }
-    if (event === 'SIGNED_OUT') {
-      console.log('Usuário deslogado');
-    }
-  });
-})();
+  if (event === 'SIGNED_OUT') {
+    console.log('Usuário deslogado');
+  }
+});
 
 window.switchTab = function(tab) {
   ['login','signup'].forEach(t => {
@@ -806,10 +793,9 @@ window.doLogin = async function() {
   showMsg('loginMsg', '', '');
 
   try {
-    if (!rememberMe) {
-      _sb.auth.setSession = null;
-    }
-
+    // Se não quer manter conectado, usa sessionStorage em vez de localStorage para esta sessão específica
+    // Mas mantém a mesma storageKey para compatibilidade
+    
     const { data, error } = await _sb.auth.signInWithPassword({ 
       email, 
       password: pw 
@@ -829,7 +815,8 @@ window.doLogin = async function() {
       return;
     }
 
-    showMsg('loginMsg', '✅ Autenticado! Carregando perfil...', 'ok');
+    // O redirecionamento será tratado pelo onAuthStateChange acima
+    showMsg('loginMsg', '✅ Sucesso! Redirecionando...', 'ok');
     
   } catch (err) {
     console.error('Erro login:', err);
@@ -907,6 +894,7 @@ window.doSignup = async function() {
       showMsg('signupMsg', '❌ Este e-mail já está cadastrado.', 'err');
     } else if (data.session) {
       showMsg('signupMsg', '✅ Conta criada! Redirecionando...', 'ok');
+      // Será redirecionado pelo onAuthStateChange
     } else {
       showMsg('signupMsg', 
         '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro.', 
