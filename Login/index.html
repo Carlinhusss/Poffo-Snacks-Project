@@ -134,7 +134,6 @@ body {
 }
 @keyframes popIn { from{transform:scale(.92) translateY(20px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
 
-/* decorative top strip */
 .auth-card::before {
   content: '';
   position: absolute;
@@ -241,7 +240,6 @@ body {
 .input-wrap input::placeholder { color: var(--gray); }
 .input-wrap input.err { border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231,76,60,.1); }
 
-/* password toggle */
 .toggle-pw {
   position: absolute;
   right: 12px;
@@ -558,6 +556,10 @@ body {
           <span class="flabel">Nome / apelido</span>
           <div class="input-wrap">
             <span class="icon">😸</span>
+            <!--
+              maxlength="30" — o trigger handle_new_user() usa left(v_username, 40),
+              então 30 chars no front garante margem segura.
+            -->
             <input id="signupName" type="text" placeholder="Como devemos te chamar?" maxlength="30" autocomplete="name" oninput="clearErr(this)"/>
           </div>
         </div>
@@ -626,9 +628,16 @@ body {
 <script>
 'use strict';
 
-/* ══ SUPABASE ══ */
+/* ══════════════════════════════════════════════════════════════
+   CONFIGURAÇÃO SUPABASE
+   Projeto: Poffo Snacks (banco novo).
+   persistSession:true  → token sobrevive ao reload da página.
+   detectSessionInUrl:true → necessário para ler o hash de
+   recuperação de senha que o Supabase embute na URL de retorno.
+══════════════════════════════════════════════════════════════ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
+
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
     persistSession: true,
@@ -637,18 +646,29 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   }
 });
 
-/* ══ REDIRECT IF ALREADY LOGGED IN ══ */
+/* ══════════════════════════════════════════════════════════════
+   URLs CENTRALIZADAS
+   Altere apenas aqui caso o domínio mude.
+
+   REDIRECT_URL → destino após login / cadastro confirmado.
+   RESET_URL    → destino do link "redefinir senha" enviado
+                  por e-mail. Deve ser uma rota do seu app que
+                  trate o #access_token na URL e chame:
+                    _sb.auth.updateUser({ password: novaSenha })
+                  CORREÇÃO vs. versão anterior: antes era
+                  window.location.origin + '/index.html', que
+                  gerava 404 no Vercel. Agora usa a rota correta.
+══════════════════════════════════════════════════════════════ */
 const REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/';
+const RESET_URL    = 'https://poffo-snacks-site.vercel.app/reset-senha';
 
-function goHome() {
-  window.location.replace(REDIRECT_URL);
-}
-
+/* ── Redireciona se já estiver logado ── */
 (async () => {
   const { data: { session } } = await _sb.auth.getSession();
   if (session) goHome();
 })();
 
+/* ── Ouve mudanças de sessão (inclui callback OAuth) ── */
 _sb.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_IN' && session) {
     showToast('✅ Login realizado! Redirecionando...');
@@ -656,11 +676,19 @@ _sb.auth.onAuthStateChange((event, session) => {
   }
 });
 
-/* ══ SANITIZE ══ */
+function goHome() {
+  window.location.replace(REDIRECT_URL);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SANITIZAÇÃO — remove chars que causam XSS ou quebram queries
+══════════════════════════════════════════════════════════════ */
 const BAD = /[<>"'`;\\]/g;
 function sanitize(s) { return (s || '').replace(BAD, '').trim(); }
 
-/* ══ TABS ══ */
+/* ══════════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════════ */
 window.switchTab = function(tab) {
   ['login','signup'].forEach(t => {
     document.getElementById('tab-' + t).classList.toggle('active', t === tab);
@@ -676,7 +704,9 @@ function clearMsgs() {
   });
 }
 
-/* ══ SHOW MSG ══ */
+/* ══════════════════════════════════════════════════════════════
+   HELPERS DE UI
+══════════════════════════════════════════════════════════════ */
 function showMsg(id, text, type) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -684,12 +714,8 @@ function showMsg(id, text, type) {
   el.className = 'msg ' + type;
 }
 
-/* ══ CLEAR ERROR ══ */
-window.clearErr = function(input) {
-  input.classList.remove('err');
-};
+window.clearErr = function(input) { input.classList.remove('err'); };
 
-/* ══ TOGGLE PASSWORD ══ */
 window.togglePw = function(inputId, btn) {
   var inp = document.getElementById(inputId);
   if (!inp) return;
@@ -698,11 +724,13 @@ window.togglePw = function(inputId, btn) {
   btn.textContent = isText ? '👁️' : '🙈';
 };
 
-/* ══ PASSWORD STRENGTH ══ */
+/* ══════════════════════════════════════════════════════════════
+   FORÇA DA SENHA
+══════════════════════════════════════════════════════════════ */
 window.checkStrength = function(pw) {
-  var wrap = document.getElementById('pwStrength');
+  var wrap  = document.getElementById('pwStrength');
   var label = document.getElementById('pwLabel');
-  var bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+  var bars  = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
   if (!pw) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
 
@@ -719,7 +747,9 @@ window.checkStrength = function(pw) {
   label.textContent = 'Senha: ' + labels[score - 1];
 };
 
-/* ══ LOADING STATE ══ */
+/* ══════════════════════════════════════════════════════════════
+   ESTADO DE CARREGAMENTO
+══════════════════════════════════════════════════════════════ */
 function setLoading(btnId, loading) {
   var btn = document.getElementById(btnId);
   if (!btn) return;
@@ -732,16 +762,10 @@ function setLoading(btnId, loading) {
   }
 }
 
-/* ══ GOOGLE LOGIN ══ */
-window.loginGoogle = async function() {
-  const { error } = await _sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: 'https://poffo-snacks-site.vercel.app/' }
-  });
-  if (error) showToast('❌ Erro ao entrar com Google.');
-};
-
-/* ══ EMAIL LOGIN ══ */
+/* ══════════════════════════════════════════════════════════════
+   LOGIN POR E-MAIL / SENHA
+   Após sucesso, onAuthStateChange detecta SIGNED_IN → goHome().
+══════════════════════════════════════════════════════════════ */
 window.doLogin = async function() {
   var email = sanitize(document.getElementById('loginEmail').value);
   var pw    = document.getElementById('loginPw').value;
@@ -761,7 +785,7 @@ window.doLogin = async function() {
       showMsg('loginMsg', msg, 'err');
     } else {
       showMsg('loginMsg', '✅ Login realizado! Redirecionando...', 'ok');
-      setTimeout(() => { window.location.replace('https://poffo-snacks-site.vercel.app/'); }, 900);
+      setTimeout(() => window.location.replace(REDIRECT_URL), 900);
     }
   } catch {
     showMsg('loginMsg', '❌ Erro de conexão. Tente novamente.', 'err');
@@ -770,7 +794,23 @@ window.doLogin = async function() {
   }
 };
 
-/* ══ EMAIL SIGNUP ══ */
+/* ══════════════════════════════════════════════════════════════
+   CADASTRO (SIGNUP)
+
+   Fluxo no banco novo (automático, sem código extra no front):
+   1. signUp() cria o usuário em auth.users
+   2. Trigger handle_new_user() executa no servidor e insere
+      uma linha em public.profiles com:
+        id       = auth.uid()
+        username = raw_user_meta_data->>'username'  ← enviado abaixo
+        role     = 'customer'  (padrão do banco)
+        xp       = 0           (padrão do banco)
+   3. Usuário recebe e-mail de confirmação → redireciona para
+      REDIRECT_URL (emailRedirectTo).
+
+   IMPORTANTE: a chave 'username' em options.data deve bater
+   exatamente com NEW.raw_user_meta_data->>'username' no SQL.
+══════════════════════════════════════════════════════════════ */
 window.doSignup = async function() {
   var name  = sanitize(document.getElementById('signupName').value).slice(0, 30);
   var email = sanitize(document.getElementById('signupEmail').value);
@@ -794,10 +834,14 @@ window.doSignup = async function() {
       email,
       password: pw,
       options: {
+        /* 'username' = chave lida pelo trigger handle_new_user()
+           via NEW.raw_user_meta_data->>'username'              */
         data: { username: name },
-        emailRedirectTo: 'https://poffo-snacks-site.vercel.app/'
+        /* Após confirmar o e-mail, Supabase redireciona aqui   */
+        emailRedirectTo: REDIRECT_URL
       }
     });
+
     if (error) {
       var msg = error.message.toLowerCase().includes('already registered')
         ? '❌ Este e-mail já possui uma conta. Tente fazer login.'
@@ -816,7 +860,19 @@ window.doSignup = async function() {
   }
 };
 
-/* ══ FORGOT PASSWORD ══ */
+/* ══════════════════════════════════════════════════════════════
+   RECUPERAÇÃO DE SENHA
+
+   CORREÇÃO vs. versão anterior:
+   — Antes: redirectTo = window.location.origin + '/index.html'
+     Problema: no deploy Vercel não existe /index.html →
+     link no e-mail levava a 404.
+   — Agora:  redirectTo = RESET_URL, que aponta para a rota
+     /reset-senha do seu app, onde o usuário digita a nova
+     senha e o front chama:
+       _sb.auth.updateUser({ password: novaSenha })
+     (o Supabase já valida o token que vem na URL).
+══════════════════════════════════════════════════════════════ */
 window.openForgot = async function() {
   var email = sanitize(document.getElementById('loginEmail').value);
   if (!email) {
@@ -826,7 +882,7 @@ window.openForgot = async function() {
   }
   try {
     const { error } = await _sb.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + '/index.html'
+      redirectTo: RESET_URL
     });
     if (error) showMsg('loginMsg', '❌ ' + error.message, 'err');
     else showMsg('loginMsg', '📧 E-mail de recuperação enviado! Verifique sua caixa de entrada.', 'ok');
@@ -835,15 +891,20 @@ window.openForgot = async function() {
   }
 };
 
-/* ══ ENTER KEY ══ */
-document.getElementById('loginPw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('loginEmail').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+/* ══════════════════════════════════════════════════════════════
+   ATALHOS DE TECLADO
+══════════════════════════════════════════════════════════════ */
+document.getElementById('loginPw').addEventListener('keydown',      e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('loginEmail').addEventListener('keydown',   e => { if (e.key === 'Enter') doLogin(); });
 document.getElementById('signupPwConf').addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
 
-/* ══ TOAST ══ */
+/* ══════════════════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════════════════ */
 function showToast(msg) {
   var t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
+  t.textContent = msg;
+  t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2400);
 }
 </script>
