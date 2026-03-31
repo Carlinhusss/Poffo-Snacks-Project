@@ -9,9 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-/* ============================================================
-   Poffo Snacks — tema MiauDelivery (rosa/lilás) com branding Poffo
-   ============================================================ */
+/* [CSS permanece o mesmo - omitido para brevidade] */
 :root {
   --pink:      #FFE0FB;
   --pink-d:    #f5c8f0;
@@ -37,14 +35,12 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidden;}
-
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-track{background:var(--snow);}
 ::-webkit-scrollbar-thumb{background:var(--purple-l);border-radius:99px;}
 
 .scroll-bar{position:fixed;top:0;left:0;z-index:9999;height:3px;width:0%;background:linear-gradient(90deg,var(--purple),var(--purple-l));transition:width .1s linear;}
 
-/* ── EMOJIS FLUTUANTES ── */
 .hero-floats,.depo-floats{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
 .hblob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;}
 .hb1{width:400px;height:400px;background:var(--pink);top:-100px;right:-80px;animation:drift 12s ease-in-out infinite;}
@@ -69,7 +65,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .df8{top:85%;left:45%;animation-delay:2.8s;animation-duration:7s;}
 @keyframes floatUp{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
 
-/* ── AUTH GUARD OVERLAY ── */
 .auth-guard{position:fixed;inset:0;z-index:10000;background:rgba(255,224,251,.96);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:20px;}
 .auth-guard.hidden{display:none;}
 .auth-guard-icon{font-size:3.5rem;animation:floatUp 3s ease-in-out infinite;}
@@ -78,7 +73,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .btn-go-login{background:var(--purple);color:#fff;padding:13px 32px;border-radius:999px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.95rem;border:none;cursor:pointer;text-decoration:none;display:inline-block;box-shadow:0 5px 20px rgba(213,129,199,.5);transition:transform .2s,box-shadow .2s;}
 .btn-go-login:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(213,129,199,.65);}
 
-/* ── MODAIS ── */
 .modal-overlay{position:fixed;inset:0;z-index:5000;background:rgba(213,129,199,.15);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease;padding:20px;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal-box{background:var(--white);border-radius:24px;padding:36px;width:100%;max-width:500px;position:relative;box-shadow:0 20px 60px rgba(213,129,199,.25),0 0 0 1.5px var(--pink-d);animation:popIn .35s cubic-bezier(.22,.68,0,1.3) both;max-height:88vh;overflow-y:auto;}
@@ -88,7 +82,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .modal-title{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--text);margin-bottom:4px;font-style:italic;}
 .modal-sub{color:var(--text-soft);font-size:.88rem;margin-bottom:24px;}
 
-/* Cupons */
 .cupons-lista{display:flex;flex-direction:column;gap:10px;}
 .cupom-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:var(--r);background:var(--snow);border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,transform .2s;}
 .cupom-item:hover{border-color:var(--purple);transform:translateX(4px);}
@@ -100,7 +93,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .cupom-badge.pct{background:var(--purple);color:#fff;}
 .cupom-badge.usado-badge{background:var(--gray);color:#fff;}
 
-/* Confirmar */
 .modal-confirm{text-align:center;}
 .confirm-icon{font-size:3.5rem;margin-bottom:10px;display:block;animation:floatUp 3s ease-in-out infinite;}
 .confirm-resumo{background:var(--snow);border-radius:var(--r);padding:16px;margin:16px 0;font-size:.84rem;text-align:left;line-height:1.9;color:var(--text);max-height:200px;overflow-y:auto;}
@@ -110,7 +102,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .btn-confirm-no{background:transparent;border:1.5px solid var(--gray);color:var(--text-soft);padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.88rem;transition:border-color .2s,color .2s;}
 .btn-confirm-no:hover{border-color:var(--purple);color:var(--purple-d);}
 
-/* Créditos */
 .modal-creditos{max-width:440px;}
 .creditos-header{text-align:center;margin-bottom:22px;}
 .creditos-icon{font-size:3rem;display:block;margin-bottom:8px;animation:floatUp 3s ease-in-out infinite;}
@@ -125,7 +116,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .credito-edit{color:var(--purple)!important;font-style:italic;}
 .creditos-footer{text-align:center;font-size:.76rem;color:var(--gray-d);border-top:1px solid var(--border);padding-top:14px;}
 
-/* ── CARRINHO FAB ── */
 .cart-fab{position:fixed;bottom:28px;right:28px;z-index:200;background:var(--purple);color:#fff;padding:11px 20px;border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;font-size:.88rem;box-shadow:0 6px 24px rgba(213,129,199,.5);transition:transform .22s cubic-bezier(.22,.68,0,1.3);font-family:'Quicksand',sans-serif;}
 .cart-fab:hover{transform:translateY(-3px) scale(1.05);}
 .cart-icon{font-size:1.2rem;display:inline-block;}
@@ -160,7 +150,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .btn-finalizar{display:block;text-align:center;text-decoration:none;background:var(--purple);color:#fff;padding:12px;border-radius:var(--rs);font-weight:700;font-size:.9rem;transition:filter .2s;}
 .btn-finalizar:hover{filter:brightness(1.1);}
 
-/* ── NAVBAR ── */
 .navbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);animation:slideDown .4s ease;}
 @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
 .nav-inner{max-width:1080px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
@@ -198,7 +187,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .btn-logout-nav:hover{border-color:var(--purple-l);color:var(--purple-d);}
 .user-badge{font-size:.74rem;font-weight:700;color:var(--purple-d);background:var(--pink);padding:4px 12px;border-radius:999px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis;border:1px solid var(--pink-d);}
 
-/* ── HERO ── */
 .hero{position:relative;min-height:540px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(150deg,var(--pink) 0%,#fff0fc 50%,var(--white) 100%);padding:80px 28px 110px;}
 .promo-banner{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;padding:6px 20px;border-radius:999px;font-size:.76rem;font-weight:600;white-space:nowrap;box-shadow:0 3px 14px rgba(213,129,199,.5);animation:promoGlow 2.5s ease infinite;z-index:5;}
 @keyframes promoGlow{0%,100%{box-shadow:0 3px 14px rgba(213,129,199,.5)}50%{box-shadow:0 3px 24px rgba(213,129,199,.85)}}
@@ -221,7 +209,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:var(--purple-l);font-size:1.3rem;animation:bounce 2s ease infinite;z-index:3;}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 
-/* ── INFO STRIP ── */
 .info-strip{background:var(--white);display:flex;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
 .info-item{display:flex;align-items:center;gap:10px;padding:16px 28px;border-right:1px solid var(--border);transition:background .2s;}
 .info-item:last-child{border-right:none;}
@@ -231,12 +218,10 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .info-item strong{color:var(--text);font-size:.88rem;font-weight:700;}
 .info-item small{color:var(--gray-d);font-size:.73rem;}
 
-/* ── SECTION HEADERS ── */
 .section-header{text-align:center;padding:60px 24px 28px;}
 .section-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4vw,2.6rem);color:var(--text);margin-bottom:8px;font-style:italic;}
 .section-header p{color:var(--text-soft);font-size:.9rem;font-weight:500;}
 
-/* ── MENU TABS ── */
 .menu-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:0 24px 16px;max-width:1080px;margin:0 auto;}
 .limite-aviso{text-align:center;font-size:.8rem;color:var(--text-soft);margin:0 auto 22px;max-width:1080px;padding:0 24px;}
 .limite-aviso strong{color:var(--purple-d);}
@@ -244,7 +229,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .menu-tab:hover{border-color:var(--purple-l);color:var(--purple-d);}
 .menu-tab.active{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 4px 14px rgba(213,129,199,.4);}
 
-/* ── MENU GRID ── */
 .menu-section{max-width:1080px;margin:0 auto;padding:0 24px 60px;background:var(--white);}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
 .menu-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;position:relative;border:1.5px solid var(--border);transition:transform .25s cubic-bezier(.22,.68,0,1.3),box-shadow .25s,border-color .25s;}
@@ -256,7 +240,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .badge-new{background:var(--pink);color:var(--purple-d);}
 .badge-best{background:var(--purple);color:#fff;}
 
-/* Product image / emoji area */
 .menu-img-wrap{height:110px;display:flex;align-items:center;justify-content:center;background:var(--snow);overflow:hidden;position:relative;}
 .menu-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s cubic-bezier(.22,.68,0,1.5);}
 .menu-card:hover .menu-img-wrap img{transform:scale(1.1) rotate(-2deg);}
@@ -273,7 +256,6 @@ body{background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidde
 .btn-add:active{transform:scale(.95);}
 .btn-add.added{background:#e0f5e0;color:#228B22;border-color:#b0e8b0;}
 
-/* ── PEDIDO ── */
 .pedido-section{background:var(--snow);padding:0 0 80px;}
 .order-progress{display:flex;align-items:center;justify-content:center;padding:0 24px 28px;max-width:560px;margin:0 auto;}
 .op-step{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;}
@@ -318,7 +300,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 .cupom-hint{font-size:.72rem;color:var(--gray-d);margin-top:6px;}
 .cupom-hint strong{color:var(--purple-d);}
 
-/* Recibo */
 .recibo-section{margin:0 26px 16px;background:var(--snow);border:1px solid var(--border);border-radius:var(--r);padding:16px;font-family:'Courier New',monospace;}
 .recibo-header{display:flex;justify-content:space-between;font-size:.84rem;font-weight:700;color:var(--purple-d);margin-bottom:6px;}
 .recibo-sep{color:var(--gray);font-size:.65rem;letter-spacing:1px;margin:5px 0;opacity:.7;}
@@ -340,11 +321,9 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 .status.success{color:#228B22;background:#f0fff0;padding:10px 14px;border:1px solid #b0e8b0;}
 .status.error{color:#c0392b;background:#fff5f5;padding:10px 14px;border:1px solid #ffccc7;}
 
-/* Auth required notice inside form */
 .auth-req-notice{margin:0 26px 14px;padding:14px 16px;background:var(--pink);border:1.5px solid var(--pink-d);border-radius:var(--rs);color:var(--purple-d);font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:10px;}
 .auth-req-notice a{color:var(--purple-d);font-weight:700;}
 
-/* ── DEPOIMENTOS ── */
 .depo-section{background:linear-gradient(135deg,var(--purple-d) 0%,var(--purple) 50%,var(--purple-l) 100%);padding:0 0 70px;position:relative;overflow:hidden;}
 .depo-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;}
 .depo-section .section-header{position:relative;z-index:2;}
@@ -362,18 +341,15 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 .depo-autor div strong{display:block;color:#fff;font-size:.82rem;}
 .depo-autor div span{color:rgba(255,255,255,.6);font-size:.7rem;}
 
-/* ── FOOTER ── */
 .site-footer{background:#1e1025;color:rgba(255,255,255,.7);padding:40px 24px;text-align:center;}
 .footer-inner{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--purple-l);margin-bottom:6px;font-style:italic;}
 .site-footer p{font-size:.84rem;line-height:1.9;}
 .site-footer small{opacity:.45;font-size:.74rem;margin-top:6px;}
 
-/* TOAST */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--purple);color:#fff;padding:10px 24px;border-radius:999px;font-size:.84rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:500;white-space:nowrap;box-shadow:0 6px 20px rgba(213,129,199,.5);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ── RESPONSIVO ── */
 @media(max-width:840px){.pedido-layout{grid-template-columns:1fr;}.sidebar{position:static;}}
 @media(max-width:680px){.nav-links{display:none;}.search-wrap input{width:110px;}.info-strip{flex-direction:column;}.info-item{border-right:none;border-bottom:1px solid var(--border);}.cart-panel{width:100%;}.form-section{padding:16px 16px 14px;}.form-actions{padding:14px 16px 18px;flex-direction:column;}.btn-submit{min-width:100%;}.status,.itens-aviso,.recibo-section{margin-left:16px;margin-right:16px;}}
 @media(max-width:460px){.menu-grid{grid-template-columns:1fr;}.hero-title{font-size:2rem;height:auto;}}
@@ -383,7 +359,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 
 <div id="scrollBar" class="scroll-bar"></div>
 
-<!-- ══ AUTH GUARD (shown while checking / not logged in for orders) ══ -->
+<!-- AUTH GUARD -->
 <div id="authGuard" class="auth-guard hidden">
   <span class="auth-guard-icon">😸</span>
   <h2>Bem-vindo ao Poffo Snacks!</h2>
@@ -391,7 +367,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   <a class="btn-go-login" href="https://poffo-snacks-login.vercel.app/">Entrar / Cadastrar →</a>
 </div>
 
-<!-- ══ MODAIS ══ -->
+<!-- MODAIS -->
 <div id="cuponsModal" class="modal-overlay" style="display:none" onclick="closeCuponsModal(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeCuponsModal()">✕</button>
@@ -448,7 +424,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </div>
 
-<!-- ══ CARRINHO ══ -->
+<!-- CARRINHO -->
 <div class="cart-fab" id="cartFab" onclick="toggleCart()" style="display:none">
   <span class="cart-icon" id="cartIcon">🛒</span>
   <span class="cart-badge" id="cartBadge">0</span>
@@ -467,7 +443,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </div>
 
-<!-- ══ NAVBAR ══ -->
+<!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-inner">
     <div class="logo-group">
@@ -494,7 +470,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </nav>
 
-<!-- ══ HERO ══ -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-floats" aria-hidden="true">
     <div class="hblob hb1"></div>
@@ -533,7 +509,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   <div class="info-item"><span>🔒</span><div><strong>Seguro</strong><small>pagamento na entrega</small></div></div>
 </div>
 
-<!-- ══ CARDÁPIO ══ -->
+<!-- CARDÁPIO -->
 <section class="menu-section" id="cardapio">
   <div class="section-header">
     <h2>Cardápio</h2>
@@ -648,7 +624,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </section>
 
-<!-- ══ FORMULÁRIO ══ -->
+<!-- FORMULÁRIO -->
 <section class="pedido-section" id="pedido">
   <div class="section-header">
     <h2>Finalizar Pedido</h2>
@@ -734,7 +710,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </section>
 
-<!-- ══ DEPOIMENTOS ══ -->
+<!-- DEPOIMENTOS -->
 <section class="depo-section">
   <div class="depo-floats" aria-hidden="true">
     <span class="df df1">😸</span><span class="df df2">🌸</span>
@@ -757,7 +733,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
       <div class="depo-card"><div class="depo-stars">⭐⭐⭐⭐⭐</div><p>"Macaron delicioso. Já virou o meu favorito."</p><div class="depo-autor"><span>😸</span><div><strong>Lucas T.</strong><span>Cliente há 8 meses</span></div></div></div>
       <div class="depo-card"><div class="depo-stars">⭐⭐⭐⭐⭐</div><p>"Sanduíche muito bem feito. Entrega dentro do prazo."</p><div class="depo-autor"><span>😸</span><div><strong>Fernanda O.</strong><span>Cliente há 3 meses</span></div></div></div>
       <div class="depo-card"><div class="depo-stars">⭐⭐⭐⭐⭐</div><p>"Brownie ótimo. Textura perfeita e recheio de caramelo muito bom."</p><div class="depo-autor"><span>😸</span><div><strong>Amanda S.</strong><span>Cliente há 1 ano</span></div></div></div>
-      <!-- duplicatas para loop contínuo -->
       <div class="depo-card"><div class="depo-stars">⭐⭐⭐⭐⭐</div><p>"Lanche brabíssimo!"</p><div class="depo-autor"><span>😸</span><div><strong>Viviane M.</strong><span>Cliente fiel</span></div></div></div>
       <div class="depo-card"><div class="depo-stars">⭐⭐⭐⭐⭐</div><p>"Realmente muito bom."</p><div class="depo-autor"><span>😸</span><div><strong>Gabriel S.</strong><span>Cliente fiel</span></div></div></div>
       <div class="depo-card"><div class="depo-stars">⭐⭐⭐⭐⭐</div><p>"Estava tão bom que acabei devorando tudo!"</p><div class="depo-autor"><span>😸</span><div><strong>Júlia S.</strong><span>Cliente fiel</span></div></div></div>
@@ -782,38 +757,141 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 <script>
 'use strict';
 
-/* ══ SUPABASE ══ */
+/* ════════════════════════════════════════════════════════════
+   SUPABASE CONFIGURAÇÃO - Schema v2 Compatible
+   Correção: storageKey idêntico ao do login para garantir 
+   que o token seja encontrado mesmo após redirecionamento
+   ════════════════════════════════════════════════════════════ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
+
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storage: window.localStorage,
+    storageKey: 'poffo-auth-token' // Mesma chave usada no login!
+  }
 });
 
-/* ══ AUTH STATE ══ */
+/* ════════════════════════════════════════════════════════════
+   ESTADO GLOBAL
+   ════════════════════════════════════════════════════════════ */
 let currentUser = null;
+let currentProfile = null; // Dados da tabela profiles (schema v2)
+let carrinho = [];
+let cupomAtivo = null;
+let authInitialized = false;
 
-_sb.auth.onAuthStateChange((_event, session) => {
-  currentUser = session?.user ?? null;
-  renderNavAuth();
-  updateAuthUI();
+/* ════════════════════════════════════════════════════════════
+   INICIALIZAÇÃO DE AUTH - CORREÇÃO CRÍTICA
+   Aguarda múltiplas verificações para garantir que a sessão
+   seja carregada do localStorage
+   ════════════════════════════════════════════════════════════ */
+async function initAuth() {
+  console.log('Iniciando verificação de auth...');
+  
+  // Primeira tentativa: getSession imediato
+  let { data: { session } } = await _sb.auth.getSession();
+  
+  if (session) {
+    console.log('Sessão encontrada imediatamente:', session.user.email);
+    await setCurrentUser(session.user);
+  } else {
+    console.log('Nenhuma sessão imediata, aguardando...');
+    // Aguarda um pouco para o Supabase recuperar do localStorage
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    const { data: { session: session2 } } = await _sb.auth.getSession();
+    if (session2) {
+      console.log('Sessão encontrada após delay:', session2.user.email);
+      await setCurrentUser(session2.user);
+    } else {
+      console.log('Nenhuma sessão ativa');
+      updateUIForAnonymous();
+    }
+  }
+  
+  authInitialized = true;
+}
+
+// Listener para mudanças de estado (login/logout em outras abas)
+_sb.auth.onAuthStateChange(async (event, session) => {
+  console.log('Auth state changed:', event, session?.user?.email);
+  
+  if (event === 'SIGNED_IN' && session) {
+    await setCurrentUser(session.user);
+  } else if (event === 'SIGNED_OUT') {
+    currentUser = null;
+    currentProfile = null;
+    updateUIForAnonymous();
+  } else if (event === 'TOKEN_REFRESHED') {
+    console.log('Token atualizado automaticamente');
+  }
 });
 
-(async () => {
-  const { data: { session } } = await _sb.auth.getSession();
-  currentUser = session?.user ?? null;
+async function setCurrentUser(user) {
+  currentUser = user;
+  
+  // Busca perfil completo do novo schema (incluindo is_banned, role, xp)
+  try {
+    const { data: profile, error } = await _sb
+      .from('profiles')
+      .select('username, role, xp, is_banned, avatar_url')
+      .eq('id', user.id)
+      .single();
+    
+    if (error) {
+      console.error('Erro ao buscar perfil:', error);
+      // Se erro de permissão (RLS), ainda mantém o usuário logado
+      // mas sem dados do perfil
+      currentProfile = null;
+    } else {
+      currentProfile = profile;
+      console.log('Perfil carregado:', profile);
+      
+      // Verifica se usuário está banido (conforme schema)
+      if (profile?.is_banned) {
+        showToast('🚷 Conta suspensa. Entre em contato com o suporte.');
+        await _sb.auth.signOut();
+        return;
+      }
+    }
+  } catch (e) {
+    console.error('Exceção ao buscar perfil:', e);
+  }
+  
+  updateUIForLoggedUser();
+}
+
+function updateUIForLoggedUser() {
   renderNavAuth();
   updateAuthUI();
-})();
+  
+  const nome = currentProfile?.username || currentUser?.email?.split('@')[0] || 'Cliente';
+  showToast(`👋 Bem-vindo, ${nome}!`);
+}
 
+function updateUIForAnonymous() {
+  renderNavAuth();
+  updateAuthUI();
+}
+
+/* ════════════════════════════════════════════════════════════
+   UI DE AUTENTICAÇÃO
+   ════════════════════════════════════════════════════════════ */
 function renderNavAuth() {
   const area = document.getElementById('navAuth');
   if (!area) return;
+  
   if (currentUser) {
-    const label = escHtml(sanitizeStr(
-      currentUser.user_metadata?.username || currentUser.email.split('@')[0]
-    ).slice(0, 20));
+    // Usa username do perfil (schema v2) ou fallback para email
+    const username = currentProfile?.username || currentUser.email.split('@')[0];
+    const label = escHtml(sanitizeStr(username).slice(0, 20));
+    
     area.innerHTML =
-      `<span class="user-badge">😸 ${label}</span>
+      `<span class="user-badge" title="${escHtml(currentUser.email)}">😸 ${label}</span>
        <button class="btn-logout-nav" onclick="doLogout()">Sair</button>`;
   } else {
     area.innerHTML = `<a class="btn-login-nav" href="https://poffo-snacks-login.vercel.app/">Entrar</a>`;
@@ -822,31 +900,45 @@ function renderNavAuth() {
 
 function updateAuthUI() {
   const notice = document.getElementById('authReqNotice');
+  const authGuard = document.getElementById('authGuard');
+  
   if (notice) notice.style.display = currentUser ? 'none' : 'flex';
+  
+  // Mostra auth guard apenas se não estiver logado e já tentou carregar
+  if (authGuard && authInitialized) {
+    authGuard.classList.toggle('hidden', !!currentUser);
+  }
 }
 
 window.doLogout = async () => {
   await _sb.auth.signOut();
   showToast('👋 Até logo!');
+  // Limpa carrinho ao sair (opcional)
+  // carrinho = []; atualizarUI();
 };
 
-/* ══ SANITIZAÇÃO ══ */
+/* ════════════════════════════════════════════════════════════
+   SANITIZAÇÃO
+   ════════════════════════════════════════════════════════════ */
 const BAD = /[<>"'`;\\]/g;
 function sanitizeStr(s){ return (s||'').replace(BAD,'').trim(); }
-function sanitizeInput(el,max){ el.value=sanitizeStr(el.value).slice(0,max); }
 function blockBad(e){ return !BAD.test(e.key); }
-function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;'); }
+function escHtml(s){ 
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;'); 
+}
 
-/* ══ SCROLL PROGRESS ══ */
+/* ════════════════════════════════════════════════════════════
+   SCROLL PROGRESS
+   ════════════════════════════════════════════════════════════ */
 window.addEventListener('scroll', function () {
   var doc = document.documentElement;
   var bar = document.getElementById('scrollBar');
   if (bar) bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
 }, { passive: true });
 
-/* ══ PRODUCT IMAGE LOADER ══ 
-   Tries /pictures/<slug>.png, then .jpg, then .jpeg, then falls back to emoji
-*/
+/* ════════════════════════════════════════════════════════════
+   PRODUCT IMAGE LOADER
+   ════════════════════════════════════════════════════════════ */
 function loadProductImages() {
   document.querySelectorAll('.menu-card').forEach(function(card) {
     var slug  = card.dataset.img;
@@ -863,7 +955,6 @@ function tryLoadImage(wrap, slug, emoji) {
 
   function next() {
     if (idx >= exts.length) {
-      // all failed → emoji fallback
       wrap.innerHTML = '<span class="menu-img-emoji">' + emoji + '</span>';
       return;
     }
@@ -883,7 +974,10 @@ function tryLoadImage(wrap, slug, emoji) {
   next();
 }
 
-/* ══ DIGITAÇÃO ══ */
+/* ════════════════════════════════════════════════════════════
+   ANIMAÇÕES E EFEITOS
+   ════════════════════════════════════════════════════════════ */
+// Digitação
 var titleLines = [
   'Sabor entregue com cuidado.',
   'Doces, salgados e bebidas.',
@@ -907,7 +1001,7 @@ function typeNext() {
 }
 typeNext();
 
-/* ══ TIMER PROMOÇÃO ══ */
+// Timer promoção
 (function () {
   var end = Date.now() + 2.5 * 3600000;
   function tick() {
@@ -923,7 +1017,7 @@ typeNext();
   tick();
 })();
 
-/* ══ SUGESTÃO HORÁRIO ══ */
+// Sugestão horário
 (function () {
   var el = document.getElementById('heroRecommend');
   if (!el) return;
@@ -937,14 +1031,16 @@ typeNext();
   el.textContent = msgs[h >= 6 && h < 12 ? 0 : h >= 12 && h < 17 ? 1 : h >= 17 && h < 21 ? 2 : 3];
 })();
 
-/* ══ RECOMENDAÇÃO DIÁRIA ══ */
+// Recomendação diária
 (function () {
   var items = ['Cupcake Gatinho','Matcha Latte Neko','Macaron Patinha','Cheesecake Nuvem','Milkshake Felino','Brownie Miau'];
   var tag = document.getElementById('heroTag');
   if (tag) tag.textContent = 'Hoje em destaque: ' + items[new Date().getDate() % items.length];
 })();
 
-/* ══ ABAS DO MENU ══ */
+/* ════════════════════════════════════════════════════════════
+   MENU E BUSCA
+   ════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.menu-tab').forEach(function (tab) {
   tab.addEventListener('click', function () {
     document.querySelectorAll('.menu-tab').forEach(function (t) { t.classList.remove('active'); });
@@ -953,17 +1049,16 @@ document.querySelectorAll('.menu-tab').forEach(function (tab) {
     document.querySelectorAll('.menu-card').forEach(function (card, i) {
       var show = cat === 'todos' || card.dataset.cat === cat;
       card.classList.toggle('hidden', !show);
-      if (show) { card.style.animationDelay = (i * 0.05) + 's'; card.style.animation = 'none'; void card.offsetWidth; card.style.animation = ''; }
     });
   });
 });
 
-/* ══ BUSCA ══ */
 var menuData = [];
 document.querySelectorAll('.menu-card').forEach(function (card) {
   var nome = card.dataset.produto, preco = card.dataset.preco, emoji = card.dataset.emoji || '😸';
   if (nome) menuData.push({ nome: nome, preco: preco, emoji: emoji, card: card });
 });
+
 var searchTimer = null;
 window.searchMenu = function (q) {
   clearTimeout(searchTimer);
@@ -974,15 +1069,13 @@ window.searchMenu = function (q) {
     var matches = menuData.filter(function (i) { return i.nome.toLowerCase().includes(safe.toLowerCase()); });
     if (!matches.length) { res.innerHTML = '<div class="search-result-item">Nenhum resultado 😸</div>'; res.classList.add('open'); return; }
     res.innerHTML = '';
-    var frag = document.createDocumentFragment();
     matches.forEach(function (item, idx) {
       var div = document.createElement('div');
       div.className = 'search-result-item';
       div.innerHTML = '<span class="sri-emoji">' + escHtml(item.emoji) + '</span><span>' + escHtml(item.nome) + '</span><span class="sri-price">R$ ' + parseFloat(item.preco).toFixed(2).replace('.',',') + '</span>';
       div.addEventListener('click', function() { scrollToItem(idx); });
-      frag.appendChild(div);
+      res.appendChild(div);
     });
-    res.appendChild(frag);
     res.classList.add('open');
   }, 200);
 };
@@ -998,11 +1091,16 @@ document.addEventListener('click', function (e) {
   if (!e.target.closest('.search-wrap')) { var r = document.getElementById('searchResults'); if (r) r.classList.remove('open'); }
 });
 
-/* ══ CARRINHO ══ */
-var carrinho   = [];
-var cupomAtivo = null;
-
+/* ════════════════════════════════════════════════════════════
+   CARRINHO
+   ════════════════════════════════════════════════════════════ */
 window.adicionarAoCarrinho = function (btn) {
+  if (!currentUser) {
+    showToast('🔒 Faça login para adicionar itens');
+    document.getElementById('authReqNotice')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  
   var card = btn.closest('.menu-card');
   var nome  = sanitizeStr(card.dataset.produto || '').slice(0, 60);
   var preco = parseFloat(card.dataset.preco) || 0;
@@ -1041,26 +1139,9 @@ function calcTotals() {
 function fmtR(v) { return 'R$ ' + v.toFixed(2).replace('.', ','); }
 
 function buildCartThumb(item) {
-  // returns a DOM element: img if available, else emoji span
   var wrap = document.createElement('div');
   wrap.className = 'ci-thumb';
-  if (item.imgSlug) {
-    var exts = ['png','jpg','jpeg','webp'];
-    var idx  = 0;
-    function next() {
-      if (idx >= exts.length) { wrap.textContent = item.emoji; return; }
-      var img = new Image();
-      img.onload = function() { wrap.innerHTML = ''; wrap.appendChild(img); };
-      img.onerror = next;
-      img.src = 'pictures/' + item.imgSlug + '.' + exts[idx];
-      img.alt = item.nome;
-      idx++;
-    }
-    next();
-    wrap.textContent = item.emoji; // placeholder while loading
-  } else {
-    wrap.textContent = item.emoji;
-  }
+  wrap.textContent = item.emoji;
   return wrap;
 }
 
@@ -1085,7 +1166,6 @@ function renderCartPanel(fmtTotal) {
     var tv = document.getElementById('totalVal'); if (tv) tv.textContent = 'R$ 0,00';
     return;
   }
-  var frag = document.createDocumentFragment();
   carrinho.forEach(function (item) {
     var li = document.createElement('li'); li.className = 'cart-item';
     var thumb = buildCartThumb(item);
@@ -1094,9 +1174,8 @@ function renderCartPanel(fmtTotal) {
     var rmBtn = document.createElement('button'); rmBtn.className = 'ci-qty-btn remove-btn'; rmBtn.textContent = '✕';
     rmBtn.addEventListener('click', (function(n){ return function(){ window.removerDoCarrinho(n); }; })(item.nome));
     li.appendChild(thumb); li.appendChild(info); li.appendChild(rmBtn);
-    frag.appendChild(li);
+    cl.appendChild(li);
   });
-  cl.appendChild(frag);
   var tv = document.getElementById('totalVal'); if (tv) tv.textContent = fmtTotal;
 }
 
@@ -1109,13 +1188,11 @@ function renderResumo(fmtSub, fmtDisc, fmtTotal, disc) {
     var rt = document.getElementById('resumoTotais'); if (rt) rt.style.display = 'none';
     return;
   }
-  var frag = document.createDocumentFragment();
   carrinho.forEach(function (item) {
     var li = document.createElement('li'); li.className = 'resumo-item';
     li.innerHTML = '<span class="ri-name">' + escHtml(item.emoji) + ' ' + escHtml(item.nome) + '</span><span class="ri-price">' + fmtR(item.preco) + '</span>';
-    frag.appendChild(li);
+    ri.appendChild(li);
   });
-  ri.appendChild(frag);
   var rt = document.getElementById('resumoTotais'); if (rt) rt.style.display = 'block';
   var rs = document.getElementById('resumoSubtotal'); if (rs) rs.textContent = fmtSub;
   var rd = document.getElementById('rtDesconto');
@@ -1132,20 +1209,17 @@ function renderRecibo(sub, disc, total) {
   var rd = document.getElementById('reciboData');
   if (rd) rd.textContent = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   var ri = document.getElementById('reciboItens'); ri.innerHTML = '';
-  var frag = document.createDocumentFragment();
   carrinho.forEach(function (item) {
     var d = document.createElement('div'); d.className = 'recibo-row';
     d.innerHTML = '<span>' + escHtml(item.emoji) + ' ' + escHtml(item.nome) + '</span><span>' + fmtR(item.preco) + '</span>';
-    frag.appendChild(d);
+    ri.appendChild(d);
   });
-  ri.appendChild(frag);
   var rs = document.getElementById('reciboSub'); if (rs) rs.textContent = fmtR(sub);
   var dr = document.getElementById('reciboDescRow');
   if (dr) { if (disc > 0) { dr.style.display = 'flex'; var rd2 = document.getElementById('reciboDesc'); if (rd2) rd2.textContent = '-' + fmtR(disc); } else dr.style.display = 'none'; }
   var rtot = document.getElementById('reciboTotal'); if (rtot) rtot.textContent = fmtR(total);
 }
 
-/* ══ PROGRESSO ══ */
 window.updateProgress = function () {
   var has = carrinho.length > 0;
   var end = (document.getElementById('endereco') || {}).value || '';
@@ -1168,7 +1242,9 @@ window.toggleCart = function () {
   document.getElementById('cartOverlay').classList.toggle('open', !open);
 };
 
-/* ══ CUPONS ══ */
+/* ════════════════════════════════════════════════════════════
+   CUPONS - Integração com Schema v2 (cupons_usuarios)
+   ════════════════════════════════════════════════════════════ */
 var DEFAULT_COUPONS = [
   { code: 'POFFO10',  desc: '10% de desconto no pedido', type: 'pct', value: 10, used: false },
   { code: 'POFFO15',  desc: '15% de desconto no pedido', type: 'pct', value: 15, used: false },
@@ -1178,25 +1254,50 @@ var DEFAULT_COUPONS = [
 ];
 
 async function fetchCoupons() {
+  // Se logado, busca do banco (tabela cupons_usuarios do schema v2)
   if (currentUser) {
+    // Insere cupons padrão se não existirem (conforme schema)
     for (var c of DEFAULT_COUPONS) {
       await _sb.from('cupons_usuarios').upsert(
-        { user_id: currentUser.id, code: c.code, used: false },
+        { 
+          user_id: currentUser.id, 
+          code: c.code, 
+          used: false,
+          descricao: c.desc,
+          tipo: c.type,
+          valor: c.value,
+          valor_minimo: 0,
+          origem: 'manual'
+        },
         { onConflict: 'user_id,code', ignoreDuplicates: true }
       );
     }
-    var { data } = await _sb.from('cupons_usuarios').select('*').eq('user_id', currentUser.id);
+    
+    // Busca cupons do usuário
+    var { data } = await _sb.from('cupons_usuarios')
+      .select('*')
+      .eq('user_id', currentUser.id);
+    
     return (data || []).map(function(row) {
       var def = DEFAULT_COUPONS.find(function(d){ return d.code === row.code; }) || {};
-      return Object.assign({}, def, row);
+      return Object.assign({}, def, row, { 
+        type: row.tipo || def.type,
+        value: row.valor || def.value,
+        used: row.used 
+      });
     });
   }
+  
+  // Fallback local para não-logados
   return getUserCoupons();
 }
 
 async function markCouponUsed(code) {
   if (currentUser) {
-    await _sb.from('cupons_usuarios').update({ used: true }).eq('user_id', currentUser.id).eq('code', sanitizeStr(code).slice(0,20));
+    await _sb.from('cupons_usuarios')
+      .update({ used: true, used_at: new Date().toISOString() })
+      .eq('user_id', currentUser.id)
+      .eq('code', sanitizeStr(code).slice(0,20));
   } else {
     marcarCupomUsadoLocal();
   }
@@ -1211,26 +1312,37 @@ function getUserCoupons() {
 function saveUserCoupons(c) { try { localStorage.setItem('poffo_coupons', JSON.stringify(c)); } catch {} }
 
 window.openCuponsModal = async function () {
+  if (!currentUser) {
+    showToast('🔒 Faça login para ver seus cupons');
+    return;
+  }
+  
   var lista = document.getElementById('cuponsLista');
   lista.innerHTML = '<p style="color:var(--gray-d);font-size:.8rem;padding:8px 0">Carregando...</p>';
   document.getElementById('cuponsModal').style.display = 'flex';
   try {
     var coupons = await fetchCoupons();
     lista.innerHTML = '';
-    var frag = document.createDocumentFragment();
+    if (!coupons.length) {
+      lista.innerHTML = '<p style="color:var(--gray-d)">Nenhum cupom disponível.</p>';
+      return;
+    }
+    
     coupons.forEach(function (c) {
       var div = document.createElement('div');
       div.className = 'cupom-item' + (c.used ? ' usado' : '');
       div.innerHTML =
-        '<div><div class="cupom-code">' + escHtml(c.code) + '</div><div class="cupom-desc">' + escHtml(c.desc||'') + '</div></div>' +
-        '<span class="cupom-badge pct">-' + Number(c.value) + '%</span>';
+        '<div><div class="cupom-code">' + escHtml(c.code) + '</div><div class="cupom-desc">' + escHtml(c.descricao || c.desc || '') + '</div></div>' +
+        '<span class="cupom-badge ' + (c.used ? 'usado-badge' : 'pct') + '">' + (c.used ? 'Usado' : '-' + Number(c.valor || c.value) + '%') + '</span>';
       if (!c.used) {
         div.addEventListener('click', (function(code){ return function(){ document.getElementById('cupomInput').value=code; closeCuponsModal(); aplicarCupom(); }; })(c.code));
       }
-      frag.appendChild(div);
+      lista.appendChild(div);
     });
-    lista.appendChild(frag);
-  } catch { lista.innerHTML = '<p style="color:#c0392b;font-size:.8rem">Erro ao carregar cupons.</p>'; }
+  } catch (e) { 
+    console.error(e);
+    lista.innerHTML = '<p style="color:#c0392b;font-size:.8rem">Erro ao carregar cupons.</p>'; 
+  }
 };
 
 window.closeCuponsModal = function (e) {
@@ -1239,6 +1351,11 @@ window.closeCuponsModal = function (e) {
 };
 
 window.aplicarCupom = async function () {
+  if (!currentUser) {
+    showToast('🔒 Faça login para usar cupons');
+    return;
+  }
+  
   var raw = sanitizeStr((document.getElementById('cupomInput')||{}).value||'').toUpperCase().slice(0,20);
   var st  = document.getElementById('cupomStatus');
   st.textContent = ''; st.className = 'cupom-status'; cupomAtivo = null;
@@ -1249,7 +1366,7 @@ window.aplicarCupom = async function () {
     if (!found)     { st.textContent = '❌ Cupom inválido.';     st.className = 'cupom-status erro'; return; }
     if (found.used) { st.textContent = '❌ Cupom já utilizado.'; st.className = 'cupom-status erro'; return; }
     cupomAtivo = Object.assign({}, found);
-    st.textContent = '✅ ' + escHtml(found.desc); st.className = 'cupom-status ok';
+    st.textContent = '✅ ' + escHtml(found.descricao || found.desc); st.className = 'cupom-status ok';
     atualizarUI();
   } catch { st.textContent = '❌ Erro ao verificar cupom.'; st.className = 'cupom-status erro'; }
 };
@@ -1277,26 +1394,34 @@ function openConfirmModal(payload) {
   window._pendingPayload = payload;
 }
 
-/* ══ SUPABASE INSERT ══ */
+/* ════════════════════════════════════════════════════════════
+   SUPABASE INSERT - Schema v2 (tabela pedidos)
+   ════════════════════════════════════════════════════════════ */
 async function sbInsertPedido(payload) {
   var t = calcTotals();
+  
+  // Schema v2: inserindo na tabela pedidos com campos corretos
   var row = {
     user_id:  currentUser ? currentUser.id : null,
-    username: currentUser ? sanitizeStr(currentUser.user_metadata?.username || currentUser.email.split('@')[0]).slice(0,20) : 'Anônimo',
+    username: currentProfile?.username || (currentUser ? currentUser.email.split('@')[0] : 'Anônimo'),
     endereco: sanitizeStr(payload.endereco).slice(0,200),
     itens:    sanitizeStr(payload.itens).slice(0,500),
     cupom:    payload.cupom && payload.cupom !== '–' ? sanitizeStr(payload.cupom).slice(0,20) : null,
     subtotal: parseFloat(t.sub.toFixed(2)),
     desconto: parseFloat(t.disc.toFixed(2)),
     total:    parseFloat(t.total.toFixed(2)),
-    status:   'pendente'
+    status:   'pendente',
+    origem:   'web'
   };
+  
   var { data, error } = await _sb.from('pedidos').insert([row]).select().single();
   if (error) throw error;
   return data;
 }
 
-/* ══ ENVIO ══ */
+/* ════════════════════════════════════════════════════════════
+   ENVIO DE PEDIDO
+   ════════════════════════════════════════════════════════════ */
 var form = document.getElementById('pedidoForm');
 form.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -1304,7 +1429,7 @@ form.addEventListener('submit', function (e) {
   statusEl.textContent = ''; statusEl.className = 'status';
   document.getElementById('itensAviso').style.display = 'none';
 
-  // Auth check — block if not logged in
+  // Verificação de autenticação
   if (!currentUser) {
     statusEl.textContent = '🔒 Faça login para enviar um pedido.';
     statusEl.classList.add('error');
@@ -1327,12 +1452,13 @@ form.addEventListener('submit', function (e) {
 
 window.doSubmitFinal = async function () {
   closeConfirmModal();
-  // Double-check auth on final submit
+  
+  // Double-check auth
   if (!currentUser) {
     showToast('🔒 Sessão expirada. Faça login novamente.');
-    setTimeout(function(){ window.location.href='login.html'; }, 1500);
     return;
   }
+  
   var submitBtn = document.getElementById('submitBtn');
   var statusEl  = document.getElementById('status');
   submitBtn.disabled = true; submitBtn.textContent = '⏳ Enviando...';
@@ -1349,14 +1475,17 @@ window.doSubmitFinal = async function () {
     atualizarUI(); confettiBurst();
     var s4 = document.getElementById('step4'); if (s4) s4.classList.add('done');
   } catch (err) {
-    statusEl.textContent = '❌ Erro ao enviar pedido. Verifique sua conexão e tente novamente.';
+    console.error(err);
+    statusEl.textContent = '❌ Erro ao enviar pedido. Verifique sua conexão.';
     statusEl.classList.add('error');
   } finally {
     submitBtn.disabled = false; submitBtn.textContent = 'Enviar Pedido';
   }
 };
 
-/* ══ LIMPAR ══ */
+/* ════════════════════════════════════════════════════════════
+   LIMPAR FORMULÁRIO
+   ════════════════════════════════════════════════════════════ */
 document.getElementById('clearBtn').addEventListener('click', function () {
   form.reset();
   var s = document.getElementById('status'); s.textContent = ''; s.className = 'status';
@@ -1367,14 +1496,15 @@ document.getElementById('clearBtn').addEventListener('click', function () {
   atualizarUI();
 });
 
-/* ══ TOAST ══ */
+/* ════════════════════════════════════════════════════════════
+   TOAST E CONFETTI
+   ════════════════════════════════════════════════════════════ */
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = sanitizeStr(msg).slice(0,80); t.classList.add('show');
   setTimeout(function () { t.classList.remove('show'); }, 2200);
 }
 
-/* ══ CONFETTI ══ */
 function confettiBurst() {
   var emojis = ['😸','🌸','🎀','✨','🍔','💜','🌙','🧁'];
   var frag = document.createDocumentFragment();
@@ -1394,7 +1524,13 @@ function confettiBurst() {
   }
 }
 
-/* ══ INIT ══ */
+/* ════════════════════════════════════════════════════════════
+   INICIALIZAÇÃO
+   ════════════════════════════════════════════════════════════ */
+// Inicia autenticação imediatamente
+initAuth();
+
+// Carrega imagens e UI
 loadProductImages();
 atualizarUI();
 updateProgress();
