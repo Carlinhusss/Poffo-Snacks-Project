@@ -364,7 +364,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   <span class="auth-guard-icon">😸</span>
   <h2>Bem-vindo ao Poffo Snacks!</h2>
   <p>Faça login ou crie sua conta para realizar pedidos.</p>
-  <a class="btn-go-login" href="https://poffo-snacks-login.vercel.app/">Entrar / Cadastrar →</a>
+  <a class="btn-go-login" href="login.html">Entrar / Cadastrar →</a>
 </div>
 
 <!-- MODAIS -->
@@ -464,7 +464,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
       </div>
       <button class="btn-cupons" onclick="openCuponsModal()">🎀 Cupons</button>
       <div class="nav-auth" id="navAuth">
-        <a class="btn-login-nav" href="https://poffo-snacks-login.vercel.app/">Entrar</a>
+        <a class="btn-login-nav" href="login.html">Entrar</a>
       </div>
     </div>
   </div>
@@ -659,7 +659,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 
       <!-- Auth required notice (shown when not logged in) -->
       <div class="auth-req-notice" id="authReqNotice" style="display:none">
-        🔒 <span>Você precisa estar logado para fazer pedidos. <a href="https://poffo-snacks-login.vercel.app/">Entrar →</a></span>
+        🔒 <span>Você precisa estar logado para fazer pedidos. <a href="login.html">Entrar →</a></span>
       </div>
 
       <div class="form-section">
@@ -759,8 +759,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 
 /* ════════════════════════════════════════════════════════════
    SUPABASE CONFIGURAÇÃO - Schema v2 Compatible
-   Correção: storageKey idêntico ao do login para garantir 
-   que o token seja encontrado mesmo após redirecionamento
    ════════════════════════════════════════════════════════════ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
@@ -771,7 +769,7 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     storage: window.localStorage,
-    storageKey: 'poffo-auth-token' // Mesma chave usada no login!
+    storageKey: 'poffo-auth-token'
   }
 });
 
@@ -779,20 +777,17 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
    ESTADO GLOBAL
    ════════════════════════════════════════════════════════════ */
 let currentUser = null;
-let currentProfile = null; // Dados da tabela profiles (schema v2)
+let currentProfile = null;
 let carrinho = [];
 let cupomAtivo = null;
 let authInitialized = false;
 
 /* ════════════════════════════════════════════════════════════
-   INICIALIZAÇÃO DE AUTH - CORREÇÃO CRÍTICA
-   Aguarda múltiplas verificações para garantir que a sessão
-   seja carregada do localStorage
+   INICIALIZAÇÃO DE AUTH
    ════════════════════════════════════════════════════════════ */
 async function initAuth() {
   console.log('Iniciando verificação de auth...');
   
-  // Primeira tentativa: getSession imediato
   let { data: { session } } = await _sb.auth.getSession();
   
   if (session) {
@@ -800,7 +795,6 @@ async function initAuth() {
     await setCurrentUser(session.user);
   } else {
     console.log('Nenhuma sessão imediata, aguardando...');
-    // Aguarda um pouco para o Supabase recuperar do localStorage
     await new Promise(resolve => setTimeout(resolve, 300));
     
     const { data: { session: session2 } } = await _sb.auth.getSession();
@@ -816,7 +810,6 @@ async function initAuth() {
   authInitialized = true;
 }
 
-// Listener para mudanças de estado (login/logout em outras abas)
 _sb.auth.onAuthStateChange(async (event, session) => {
   console.log('Auth state changed:', event, session?.user?.email);
   
@@ -834,7 +827,6 @@ _sb.auth.onAuthStateChange(async (event, session) => {
 async function setCurrentUser(user) {
   currentUser = user;
   
-  // Busca perfil completo do novo schema (incluindo is_banned, role, xp)
   try {
     const { data: profile, error } = await _sb
       .from('profiles')
@@ -844,14 +836,11 @@ async function setCurrentUser(user) {
     
     if (error) {
       console.error('Erro ao buscar perfil:', error);
-      // Se erro de permissão (RLS), ainda mantém o usuário logado
-      // mas sem dados do perfil
       currentProfile = null;
     } else {
       currentProfile = profile;
       console.log('Perfil carregado:', profile);
       
-      // Verifica se usuário está banido (conforme schema)
       if (profile?.is_banned) {
         showToast('🚷 Conta suspensa. Entre em contato com o suporte.');
         await _sb.auth.signOut();
@@ -886,7 +875,6 @@ function renderNavAuth() {
   if (!area) return;
   
   if (currentUser) {
-    // Usa username do perfil (schema v2) ou fallback para email
     const username = currentProfile?.username || currentUser.email.split('@')[0];
     const label = escHtml(sanitizeStr(username).slice(0, 20));
     
@@ -894,7 +882,7 @@ function renderNavAuth() {
       `<span class="user-badge" title="${escHtml(currentUser.email)}">😸 ${label}</span>
        <button class="btn-logout-nav" onclick="doLogout()">Sair</button>`;
   } else {
-    area.innerHTML = `<a class="btn-login-nav" href="https://poffo-snacks-login.vercel.app/">Entrar</a>`;
+    area.innerHTML = `<a class="btn-login-nav" href="login.html">Entrar</a>`;
   }
 }
 
@@ -904,7 +892,6 @@ function updateAuthUI() {
   
   if (notice) notice.style.display = currentUser ? 'none' : 'flex';
   
-  // Mostra auth guard apenas se não estiver logado e já tentou carregar
   if (authGuard && authInitialized) {
     authGuard.classList.toggle('hidden', !!currentUser);
   }
@@ -913,8 +900,6 @@ function updateAuthUI() {
 window.doLogout = async () => {
   await _sb.auth.signOut();
   showToast('👋 Até logo!');
-  // Limpa carrinho ao sair (opcional)
-  // carrinho = []; atualizarUI();
 };
 
 /* ════════════════════════════════════════════════════════════
@@ -977,7 +962,6 @@ function tryLoadImage(wrap, slug, emoji) {
 /* ════════════════════════════════════════════════════════════
    ANIMAÇÕES E EFEITOS
    ════════════════════════════════════════════════════════════ */
-// Digitação
 var titleLines = [
   'Sabor entregue com cuidado.',
   'Doces, salgados e bebidas.',
@@ -1001,7 +985,6 @@ function typeNext() {
 }
 typeNext();
 
-// Timer promoção
 (function () {
   var end = Date.now() + 2.5 * 3600000;
   function tick() {
@@ -1017,7 +1000,6 @@ typeNext();
   tick();
 })();
 
-// Sugestão horário
 (function () {
   var el = document.getElementById('heroRecommend');
   if (!el) return;
@@ -1031,7 +1013,6 @@ typeNext();
   el.textContent = msgs[h >= 6 && h < 12 ? 0 : h >= 12 && h < 17 ? 1 : h >= 17 && h < 21 ? 2 : 3];
 })();
 
-// Recomendação diária
 (function () {
   var items = ['Cupcake Gatinho','Matcha Latte Neko','Macaron Patinha','Cheesecake Nuvem','Milkshake Felino','Brownie Miau'];
   var tag = document.getElementById('heroTag');
@@ -1243,7 +1224,7 @@ window.toggleCart = function () {
 };
 
 /* ════════════════════════════════════════════════════════════
-   CUPONS - Integração com Schema v2 (cupons_usuarios)
+   CUPONS
    ════════════════════════════════════════════════════════════ */
 var DEFAULT_COUPONS = [
   { code: 'POFFO10',  desc: '10% de desconto no pedido', type: 'pct', value: 10, used: false },
@@ -1254,9 +1235,7 @@ var DEFAULT_COUPONS = [
 ];
 
 async function fetchCoupons() {
-  // Se logado, busca do banco (tabela cupons_usuarios do schema v2)
   if (currentUser) {
-    // Insere cupons padrão se não existirem (conforme schema)
     for (var c of DEFAULT_COUPONS) {
       await _sb.from('cupons_usuarios').upsert(
         { 
@@ -1273,7 +1252,6 @@ async function fetchCoupons() {
       );
     }
     
-    // Busca cupons do usuário
     var { data } = await _sb.from('cupons_usuarios')
       .select('*')
       .eq('user_id', currentUser.id);
@@ -1288,7 +1266,6 @@ async function fetchCoupons() {
     });
   }
   
-  // Fallback local para não-logados
   return getUserCoupons();
 }
 
@@ -1394,13 +1371,9 @@ function openConfirmModal(payload) {
   window._pendingPayload = payload;
 }
 
-/* ════════════════════════════════════════════════════════════
-   SUPABASE INSERT - Schema v2 (tabela pedidos)
-   ════════════════════════════════════════════════════════════ */
 async function sbInsertPedido(payload) {
   var t = calcTotals();
   
-  // Schema v2: inserindo na tabela pedidos com campos corretos
   var row = {
     user_id:  currentUser ? currentUser.id : null,
     username: currentProfile?.username || (currentUser ? currentUser.email.split('@')[0] : 'Anônimo'),
@@ -1419,9 +1392,6 @@ async function sbInsertPedido(payload) {
   return data;
 }
 
-/* ════════════════════════════════════════════════════════════
-   ENVIO DE PEDIDO
-   ════════════════════════════════════════════════════════════ */
 var form = document.getElementById('pedidoForm');
 form.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -1429,7 +1399,6 @@ form.addEventListener('submit', function (e) {
   statusEl.textContent = ''; statusEl.className = 'status';
   document.getElementById('itensAviso').style.display = 'none';
 
-  // Verificação de autenticação
   if (!currentUser) {
     statusEl.textContent = '🔒 Faça login para enviar um pedido.';
     statusEl.classList.add('error');
@@ -1453,7 +1422,6 @@ form.addEventListener('submit', function (e) {
 window.doSubmitFinal = async function () {
   closeConfirmModal();
   
-  // Double-check auth
   if (!currentUser) {
     showToast('🔒 Sessão expirada. Faça login novamente.');
     return;
@@ -1483,9 +1451,6 @@ window.doSubmitFinal = async function () {
   }
 };
 
-/* ════════════════════════════════════════════════════════════
-   LIMPAR FORMULÁRIO
-   ════════════════════════════════════════════════════════════ */
 document.getElementById('clearBtn').addEventListener('click', function () {
   form.reset();
   var s = document.getElementById('status'); s.textContent = ''; s.className = 'status';
@@ -1496,9 +1461,6 @@ document.getElementById('clearBtn').addEventListener('click', function () {
   atualizarUI();
 });
 
-/* ════════════════════════════════════════════════════════════
-   TOAST E CONFETTI
-   ════════════════════════════════════════════════════════════ */
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = sanitizeStr(msg).slice(0,80); t.classList.add('show');
@@ -1524,13 +1486,7 @@ function confettiBurst() {
   }
 }
 
-/* ════════════════════════════════════════════════════════════
-   INICIALIZAÇÃO
-   ════════════════════════════════════════════════════════════ */
-// Inicia autenticação imediatamente
 initAuth();
-
-// Carrega imagens e UI
 loadProductImages();
 atualizarUI();
 updateProgress();
