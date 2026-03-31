@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-/* [CSS permanece o mesmo - omitido para brevidade] */
+/* [CSS permanece o mesmo] */
 :root {
   --pink:      #FFE0FB;
   --pink-d:    #f5c8f0;
@@ -359,7 +359,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 
 <div id="scrollBar" class="scroll-bar"></div>
 
-<!-- AUTH GUARD -->
 <div id="authGuard" class="auth-guard hidden">
   <span class="auth-guard-icon">😸</span>
   <h2>Bem-vindo ao Poffo Snacks!</h2>
@@ -367,7 +366,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   <a class="btn-go-login" href="login.html">Entrar / Cadastrar →</a>
 </div>
 
-<!-- MODAIS -->
 <div id="cuponsModal" class="modal-overlay" style="display:none" onclick="closeCuponsModal(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeCuponsModal()">✕</button>
@@ -424,7 +422,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </div>
 
-<!-- CARRINHO -->
 <div class="cart-fab" id="cartFab" onclick="toggleCart()" style="display:none">
   <span class="cart-icon" id="cartIcon">🛒</span>
   <span class="cart-badge" id="cartBadge">0</span>
@@ -443,7 +440,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </div>
 
-<!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-inner">
     <div class="logo-group">
@@ -470,7 +466,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-floats" aria-hidden="true">
     <div class="hblob hb1"></div>
@@ -502,14 +497,12 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   <div class="scroll-hint">↓</div>
 </section>
 
-<!-- INFO STRIP -->
 <div class="info-strip">
   <div class="info-item"><span>⏰</span><div><strong>30–45 min</strong><small>tempo médio</small></div></div>
   <div class="info-item"><span>⭐</span><div><strong>4.9 / 5.0</strong><small>avaliação</small></div></div>
   <div class="info-item"><span>🔒</span><div><strong>Seguro</strong><small>pagamento na entrega</small></div></div>
 </div>
 
-<!-- CARDÁPIO -->
 <section class="menu-section" id="cardapio">
   <div class="section-header">
     <h2>Cardápio</h2>
@@ -524,7 +517,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   <p class="limite-aviso">Máximo de <strong>3 itens diferentes</strong> por pedido.</p>
   <div class="menu-grid">
 
-    <!-- DOCES -->
     <div class="menu-card" data-cat="doces" data-produto="Cupcake Gatinho" data-preco="14.90" data-emoji="🧁" data-img="cupcake-gatinho">
       <div class="card-badge badge-new">✨ Novo</div>
       <div class="menu-img-wrap" id="img-cupcake-gatinho"></div>
@@ -563,7 +555,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
       </div>
     </div>
 
-    <!-- SALGADOS -->
     <div class="menu-card" data-cat="salgados" data-produto="Croissant Patisserie" data-preco="13.90" data-emoji="🥐" data-img="croissant-patisserie">
       <div class="menu-img-wrap" id="img-croissant-patisserie"></div>
       <div class="menu-info">
@@ -592,7 +583,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
       </div>
     </div>
 
-    <!-- BEBIDAS -->
     <div class="menu-card" data-cat="bebidas" data-produto="Chá Especial" data-preco="9.90" data-emoji="🍵" data-img="cha-especial">
       <div class="menu-img-wrap" id="img-cha-especial"></div>
       <div class="menu-info">
@@ -624,7 +614,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </section>
 
-<!-- FORMULÁRIO -->
 <section class="pedido-section" id="pedido">
   <div class="section-header">
     <h2>Finalizar Pedido</h2>
@@ -657,7 +646,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
     </div>
     <form id="pedidoForm" class="pedido-card" autocomplete="off" novalidate>
 
-      <!-- Auth required notice (shown when not logged in) -->
       <div class="auth-req-notice" id="authReqNotice" style="display:none">
         🔒 <span>Você precisa estar logado para fazer pedidos. <a href="login.html">Entrar →</a></span>
       </div>
@@ -710,7 +698,6 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
   </div>
 </section>
 
-<!-- DEPOIMENTOS -->
 <section class="depo-section">
   <div class="depo-floats" aria-hidden="true">
     <span class="df df1">😸</span><span class="df df2">🌸</span>
@@ -758,7 +745,7 @@ input::placeholder,textarea::placeholder{color:var(--gray);}
 'use strict';
 
 /* ════════════════════════════════════════════════════════════
-   SUPABASE CONFIGURAÇÃO - Schema v2 Compatible
+   SUPABASE CONFIG - MESMA CHAVE EM TODAS AS PÁGINAS
    ════════════════════════════════════════════════════════════ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
@@ -769,7 +756,7 @@ const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     storage: window.localStorage,
-    storageKey: 'poffo-auth-token'
+    storageKey: 'poffo-auth-token-v1' // VERSÃO ESPECÍFICA PARA EVITAR CONFLITOS
   }
 });
 
@@ -781,37 +768,50 @@ let currentProfile = null;
 let carrinho = [];
 let cupomAtivo = null;
 let authInitialized = false;
+let authCheckAttempts = 0;
 
 /* ════════════════════════════════════════════════════════════
-   INICIALIZAÇÃO DE AUTH
+   INICIALIZAÇÃO DE AUTH - COM RETRY ROBUSTO
    ════════════════════════════════════════════════════════════ */
 async function initAuth() {
-  console.log('Iniciando verificação de auth...');
+  console.log('[Auth] Iniciando verificação...');
   
+  // Tentativa imediata
   let { data: { session } } = await _sb.auth.getSession();
   
-  if (session) {
-    console.log('Sessão encontrada imediatamente:', session.user.email);
+  if (session?.user) {
+    console.log('[Auth] Sessão encontrada imediatamente:', session.user.email);
     await setCurrentUser(session.user);
-  } else {
-    console.log('Nenhuma sessão imediata, aguardando...');
-    await new Promise(resolve => setTimeout(resolve, 300));
+    authInitialized = true;
+    return;
+  }
+  
+  // Se não achou, tenta mais 3x com intervalo (o Supabase pode estar restaurando do storage)
+  const maxAttempts = 3;
+  while (authCheckAttempts < maxAttempts && !currentUser) {
+    authCheckAttempts++;
+    console.log(`[Auth] Tentativa ${authCheckAttempts}/${maxAttempts}...`);
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    const { data: { session: session2 } } = await _sb.auth.getSession();
-    if (session2) {
-      console.log('Sessão encontrada após delay:', session2.user.email);
-      await setCurrentUser(session2.user);
-    } else {
-      console.log('Nenhuma sessão ativa');
-      updateUIForAnonymous();
+    const { data: { session: retrySession } } = await _sb.auth.getSession();
+    if (retrySession?.user) {
+      console.log('[Auth] Sessão encontrada na tentativa', authCheckAttempts);
+      await setCurrentUser(retrySession.user);
+      break;
     }
+  }
+  
+  if (!currentUser) {
+    console.log('[Auth] Nenhuma sessão ativa após todas as tentativas');
+    updateUIForAnonymous();
   }
   
   authInitialized = true;
 }
 
+// Listener para mudanças de estado em TEMPO REAL
 _sb.auth.onAuthStateChange(async (event, session) => {
-  console.log('Auth state changed:', event, session?.user?.email);
+  console.log('[Auth] Evento:', event, 'Sessão:', session?.user?.email);
   
   if (event === 'SIGNED_IN' && session) {
     await setCurrentUser(session.user);
@@ -819,8 +819,9 @@ _sb.auth.onAuthStateChange(async (event, session) => {
     currentUser = null;
     currentProfile = null;
     updateUIForAnonymous();
+    showToast('👋 Você saiu da conta');
   } else if (event === 'TOKEN_REFRESHED') {
-    console.log('Token atualizado automaticamente');
+    console.log('[Auth] Token atualizado');
   }
 });
 
@@ -835,11 +836,11 @@ async function setCurrentUser(user) {
       .single();
     
     if (error) {
-      console.error('Erro ao buscar perfil:', error);
+      console.error('[Auth] Erro ao buscar perfil:', error);
       currentProfile = null;
     } else {
       currentProfile = profile;
-      console.log('Perfil carregado:', profile);
+      console.log('[Auth] Perfil carregado:', profile);
       
       if (profile?.is_banned) {
         showToast('🚷 Conta suspensa. Entre em contato com o suporte.');
@@ -848,7 +849,7 @@ async function setCurrentUser(user) {
       }
     }
   } catch (e) {
-    console.error('Exceção ao buscar perfil:', e);
+    console.error('[Auth] Exceção ao buscar perfil:', e);
   }
   
   updateUIForLoggedUser();
@@ -859,7 +860,9 @@ function updateUIForLoggedUser() {
   updateAuthUI();
   
   const nome = currentProfile?.username || currentUser?.email?.split('@')[0] || 'Cliente';
-  showToast(`👋 Bem-vindo, ${nome}!`);
+  if (authInitialized) {
+    showToast(`👋 Bem-vindo de volta, ${nome}!`);
+  }
 }
 
 function updateUIForAnonymous() {
@@ -899,11 +902,12 @@ function updateAuthUI() {
 
 window.doLogout = async () => {
   await _sb.auth.signOut();
-  showToast('👋 Até logo!');
+  carrinho = [];
+  atualizarUI();
 };
 
 /* ════════════════════════════════════════════════════════════
-   SANITIZAÇÃO
+   RESTO DO CÓDIGO (SANITIZAÇÃO, CARRINHO, ETC)
    ════════════════════════════════════════════════════════════ */
 const BAD = /[<>"'`;\\]/g;
 function sanitizeStr(s){ return (s||'').replace(BAD,'').trim(); }
@@ -912,18 +916,12 @@ function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;'); 
 }
 
-/* ════════════════════════════════════════════════════════════
-   SCROLL PROGRESS
-   ════════════════════════════════════════════════════════════ */
 window.addEventListener('scroll', function () {
   var doc = document.documentElement;
   var bar = document.getElementById('scrollBar');
   if (bar) bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
 }, { passive: true });
 
-/* ════════════════════════════════════════════════════════════
-   PRODUCT IMAGE LOADER
-   ════════════════════════════════════════════════════════════ */
 function loadProductImages() {
   document.querySelectorAll('.menu-card').forEach(function(card) {
     var slug  = card.dataset.img;
@@ -959,9 +957,6 @@ function tryLoadImage(wrap, slug, emoji) {
   next();
 }
 
-/* ════════════════════════════════════════════════════════════
-   ANIMAÇÕES E EFEITOS
-   ════════════════════════════════════════════════════════════ */
 var titleLines = [
   'Sabor entregue com cuidado.',
   'Doces, salgados e bebidas.',
@@ -1019,9 +1014,6 @@ typeNext();
   if (tag) tag.textContent = 'Hoje em destaque: ' + items[new Date().getDate() % items.length];
 })();
 
-/* ════════════════════════════════════════════════════════════
-   MENU E BUSCA
-   ════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.menu-tab').forEach(function (tab) {
   tab.addEventListener('click', function () {
     document.querySelectorAll('.menu-tab').forEach(function (t) { t.classList.remove('active'); });
@@ -1072,9 +1064,6 @@ document.addEventListener('click', function (e) {
   if (!e.target.closest('.search-wrap')) { var r = document.getElementById('searchResults'); if (r) r.classList.remove('open'); }
 });
 
-/* ════════════════════════════════════════════════════════════
-   CARRINHO
-   ════════════════════════════════════════════════════════════ */
 window.adicionarAoCarrinho = function (btn) {
   if (!currentUser) {
     showToast('🔒 Faça login para adicionar itens');
@@ -1223,9 +1212,6 @@ window.toggleCart = function () {
   document.getElementById('cartOverlay').classList.toggle('open', !open);
 };
 
-/* ════════════════════════════════════════════════════════════
-   CUPONS
-   ════════════════════════════════════════════════════════════ */
 var DEFAULT_COUPONS = [
   { code: 'POFFO10',  desc: '10% de desconto no pedido', type: 'pct', value: 10, used: false },
   { code: 'POFFO15',  desc: '15% de desconto no pedido', type: 'pct', value: 15, used: false },
@@ -1486,6 +1472,7 @@ function confettiBurst() {
   }
 }
 
+// INICIALIZAÇÃO
 initAuth();
 loadProductImages();
 atualizarUI();
