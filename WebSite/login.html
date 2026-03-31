@@ -9,9 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-/* ============================================================
-   Poffo Snacks — Login Page (Compatível com Schema v2)
-   ============================================================ */
 :root {
   --pink:      #FFE0FB;
   --pink-d:    #f5c8f0;
@@ -44,7 +41,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── BLOBS ── */
 .bg-blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .blob {
   position: absolute;
@@ -57,7 +53,6 @@ body {
 .b3 { width: 240px; height: 240px; background: var(--pink-d);   top: 40%; left: 25%; animation: drift 11s ease-in-out infinite 2s; }
 @keyframes drift { 0%,100%{transform:translate(0,0)} 50%{transform:translate(24px,-24px)} }
 
-/* ── FLOATING EMOJIS ── */
 .floats { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .fe { position: absolute; font-size: 1.8rem; opacity: .15; user-select: none; animation: floatUp 7s ease-in-out infinite; }
 .fe1 { top:8%;  left:4%;  animation-delay:0s;   animation-duration:8s; }
@@ -70,7 +65,6 @@ body {
 .fe8 { top:88%; left:40%; animation-delay:2.8s; animation-duration:7s; }
 @keyframes floatUp { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-18px) rotate(3deg)} }
 
-/* ── NAVBAR ── */
 .navbar {
   position: relative;
   z-index: 10;
@@ -109,7 +103,6 @@ body {
 }
 .nav-back:hover { color: var(--purple-d); }
 
-/* ── MAIN WRAPPER ── */
 .main-wrap {
   flex: 1;
   display: flex;
@@ -120,7 +113,6 @@ body {
   z-index: 1;
 }
 
-/* ── AUTH CARD ── */
 .auth-card {
   background: rgba(255,255,255,.95);
   border-radius: 28px;
@@ -134,7 +126,6 @@ body {
 }
 @keyframes popIn { from{transform:scale(.92) translateY(20px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
 
-/* decorative top strip */
 .auth-card::before {
   content: '';
   position: absolute;
@@ -165,7 +156,6 @@ body {
   font-size: .87rem;
 }
 
-/* ── TABS ── */
 .auth-tabs {
   display: flex;
   background: var(--snow);
@@ -193,12 +183,10 @@ body {
   box-shadow: 0 3px 12px rgba(213,129,199,.4);
 }
 
-/* ── PANELS ── */
 .auth-panel { display: none; }
 .auth-panel.active { display: block; animation: fadeSlide .3s ease both; }
 @keyframes fadeSlide { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-/* ── FIELDS ── */
 .field-group { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
 .field { display: flex; flex-direction: column; }
 .flabel {
@@ -241,7 +229,6 @@ body {
 .input-wrap input::placeholder { color: var(--gray); }
 .input-wrap input.err { border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231,76,60,.1); }
 
-/* password toggle */
 .toggle-pw {
   position: absolute;
   right: 12px;
@@ -255,7 +242,6 @@ body {
 }
 .toggle-pw:hover { color: var(--purple-d); }
 
-/* ── PASSWORD STRENGTH ── */
 .pw-strength { margin-top: 6px; }
 .pw-bars { display: flex; gap: 4px; margin-bottom: 4px; }
 .pw-bar {
@@ -268,7 +254,6 @@ body {
 .pw-bar.strong { background: #27ae60; }
 .pw-label { font-size: .7rem; color: var(--text-soft); font-weight: 600; }
 
-/* ── CHECKBOX ── */
 .check-row {
   display: flex;
   align-items: center;
@@ -286,7 +271,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ── DIVIDER ── */
 .divider {
   display: flex;
   align-items: center;
@@ -303,7 +287,6 @@ body {
   background: var(--border);
 }
 
-/* ── BUTTONS ── */
 .btn-primary {
   width: 100%;
   padding: 14px;
@@ -362,7 +345,6 @@ body {
 }
 .google-icon { font-size: 1.1rem; }
 
-/* ── STATUS MSG ── */
 .msg {
   margin-top: 14px;
   padding: 10px 14px;
@@ -376,7 +358,6 @@ body {
 .msg.err { display: block; background: #fff5f5; color: #c0392b; border: 1px solid #ffccc7; }
 .msg.info { display: block; background: var(--pink); color: var(--purple-d); border: 1px solid var(--pink-d); }
 
-/* ── FORGOT LINK ── */
 .forgot-link {
   text-align: right;
   margin-top: -6px;
@@ -388,10 +369,10 @@ body {
   text-decoration: none;
   font-weight: 600;
   transition: color .2s;
+  cursor: pointer;
 }
 .forgot-link a:hover { color: var(--purple); text-decoration: underline; }
 
-/* ── FOOTER LINK ── */
 .switch-mode {
   text-align: center;
   margin-top: 20px;
@@ -407,7 +388,6 @@ body {
 }
 .switch-mode a:hover { color: var(--purple); }
 
-/* ── TRUST BADGES ── */
 .trust-badges {
   display: flex;
   justify-content: center;
@@ -427,7 +407,6 @@ body {
 }
 .trust-item span:first-child { font-size: 1.2rem; }
 
-/* ── FOOTER ── */
 .site-footer {
   position: relative;
   z-index: 1;
@@ -440,7 +419,6 @@ body {
 .site-footer p { font-size:.82rem; line-height:1.9; }
 .site-footer small { opacity:.45; font-size:.72rem; margin-top:4px; display:block; }
 
-/* ── TOAST ── */
 .toast {
   position: fixed;
   bottom: 28px;
@@ -461,7 +439,6 @@ body {
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── RESPONSIVE ── */
 @media(max-width:480px) {
   .auth-card { padding: 32px 22px; }
   .card-title { font-size: 1.6rem; }
@@ -471,7 +448,6 @@ body {
 </head>
 <body>
 
-<!-- BG effects -->
 <div class="bg-blobs" aria-hidden="true">
   <div class="blob b1"></div>
   <div class="blob b2"></div>
@@ -488,18 +464,16 @@ body {
   <span class="fe fe8">💜</span>
 </div>
 
-<!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-inner">
     <a class="logo" href="index.html">
       <span class="logo-icon">😸</span>
       <span class="logo-text">Poffo<span class="logo-accent">Snacks</span></span>
     </a>
-    <a class="nav-back" href="https://poffo-snacks-site.vercel.app/">← Voltar ao cardápio</a>
+    <a class="nav-back" href="index.html">← Voltar ao cardápio</a>
   </div>
 </nav>
 
-<!-- MAIN -->
 <main class="main-wrap">
   <div class="auth-card">
     <div class="card-header">
@@ -508,13 +482,11 @@ body {
       <p class="card-sub">Faça login ou cadastre-se para pedir</p>
     </div>
 
-    <!-- TABS -->
     <div class="auth-tabs" role="tablist">
       <button class="auth-tab active" id="tab-login" role="tab" aria-selected="true" onclick="switchTab('login')">Entrar</button>
       <button class="auth-tab" id="tab-signup" role="tab" aria-selected="false" onclick="switchTab('signup')">Criar conta</button>
     </div>
 
-    <!-- ══ LOGIN PANEL ══ -->
     <div class="auth-panel active" id="panel-login">
 
       <div class="field-group">
@@ -556,7 +528,6 @@ body {
       </div>
     </div>
 
-    <!-- ══ SIGNUP PANEL ══ -->
     <div class="auth-panel" id="panel-signup">
 
       <div class="field-group">
@@ -611,7 +582,6 @@ body {
       </div>
     </div>
 
-    <!-- TRUST BADGES -->
     <div class="trust-badges">
       <div class="trust-item"><span>🔒</span><span>Seguro</span></div>
       <div class="trust-item"><span>😸</span><span>Grátis</span></div>
@@ -620,7 +590,6 @@ body {
   </div>
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-logo">😸 Poffo Snacks</div>
   <p>📍 Mauá, SP &nbsp;·&nbsp; ⏰ Seg–Dom, 10h–22h</p>
@@ -632,25 +601,21 @@ body {
 <script>
 'use strict';
 
-/* ══ SUPABASE CONFIG ══ */
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
 
-// Inicializa cliente Supabase
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    storage: localStorage // 'remember me' functionality
+    storage: localStorage
   }
 });
 
-/* ══ CONSTANTES ══ */
-const REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/';
-const ADMIN_REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/admin.html'; // Opcional: página de admin
+const REDIRECT_URL = 'index.html';
+const ADMIN_REDIRECT_URL = 'admin.html';
 
-/* ══ HELPERS ══ */
 const BAD = /[<>"'`;\\]/g;
 function sanitize(s) { return (s || '').replace(BAD, '').trim(); }
 
@@ -687,16 +652,10 @@ function clearMsgs() {
   });
 }
 
-/* ══ VERIFICAÇÃO DE SESSÃO E PERFIL ══ 
-   Importante: O novo schema tem a tabela 'profiles' que é populada
-   automaticamente pelo trigger handle_new_user(). Aqui verificamos
-   se o usuário logado tem perfil completo e sua role.
-*/
 async function checkUserProfile(session) {
   if (!session || !session.user) return null;
   
   try {
-    // Busca perfil na tabela profiles (compatível com schema novo)
     const { data: profile, error } = await _sb
       .from('profiles')
       .select('username, role, xp, is_banned')
@@ -707,7 +666,6 @@ async function checkUserProfile(session) {
       console.error('Erro ao buscar perfil:', error);
     }
     
-    // Se usuário está banido (conforme schema logs_bot/RLS)
     if (profile?.is_banned) {
       await _sb.auth.signOut();
       showMsg('loginMsg', '🚷 Conta suspensa temporariamente.', 'err');
@@ -721,26 +679,19 @@ async function checkUserProfile(session) {
   }
 }
 
-/* ══ REDIRECIONAMENTO INTELIGENTE ══ 
-   Baseado no schema, verifica se é admin para redirecionar
-   para área administrativa se necessário.
-*/
 async function handlePostLoginRedirect(session) {
   const profile = await checkUserProfile(session);
   
   if (!profile) {
-    // Se não achou perfil, pode ser delay do trigger. Aguarda um pouco e tenta novamente
     setTimeout(() => {
       window.location.replace(REDIRECT_URL);
     }, 1000);
     return;
   }
   
-  // Verifica role para redirecionamento específico (conforme schema profiles.role)
   if (profile.role === 'admin' || profile.role === 'staff') {
     showToast(`👋 Bem-vindo, ${profile.username}! (Admin)`);
     setTimeout(() => {
-      // window.location.replace(ADMIN_REDIRECT_URL); // Descomente se tiver página de admin
       window.location.replace(REDIRECT_URL);
     }, 900);
   } else {
@@ -751,19 +702,13 @@ async function handlePostLoginRedirect(session) {
   }
 }
 
-/* ══ INICIALIZAÇÃO ══ */
 (async () => {
-  // Verifica se já existe sessão ativa
   const { data: { session } } = await _sb.auth.getSession();
   
   if (session) {
-    // Verifica perfil antes de redirecionar
     await checkUserProfile(session);
-    // Se chegou aqui, está logado (não banido)
-    // window.location.replace(REDIRECT_URL); // Opcional: auto-redirect se já logado
   }
   
-  // Listener para mudanças de auth (login em outra aba, logout, etc)
   _sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       showToast('✅ Login realizado! Verificando perfil...');
@@ -775,7 +720,6 @@ async function handlePostLoginRedirect(session) {
   });
 })();
 
-/* ══ NAVEGAÇÃO/TABS ══ */
 window.switchTab = function(tab) {
   ['login','signup'].forEach(t => {
     document.getElementById('tab-' + t).classList.toggle('active', t === tab);
@@ -823,16 +767,12 @@ window.checkStrength = function(pw) {
   label.textContent = score > 0 ? 'Senha: ' + labels[score - 1] : '';
 };
 
-/* ══ LOGIN COM GOOGLE ══ 
-   Compatível com o schema: cria profile via trigger automaticamente
-*/
 window.loginGoogle = async function() {
   try {
     const { error } = await _sb.auth.signInWithOAuth({
       provider: 'google',
       options: { 
-        redirectTo: REDIRECT_URL,
-        // Força a seleção de conta para evitar login automático indesejado
+        redirectTo: window.location.origin + '/' + REDIRECT_URL,
         queryParams: {
           access_type: 'offline',
           prompt: 'select_account'
@@ -846,15 +786,11 @@ window.loginGoogle = async function() {
   }
 };
 
-/* ══ LOGIN COM EMAIL/SENHA ══ 
-   Integra com tabela profiles via RLS (usuário só vê próprio perfil)
-*/
 window.doLogin = async function() {
   const email = sanitize(document.getElementById('loginEmail').value);
   const pw = document.getElementById('loginPw').value;
   const rememberMe = document.getElementById('rememberMe').checked;
 
-  // Validação
   if (!email) { 
     document.getElementById('loginEmail').classList.add('err'); 
     showMsg('loginMsg','⚠️ Preencha o e-mail.','err'); 
@@ -870,10 +806,8 @@ window.doLogin = async function() {
   showMsg('loginMsg', '', '');
 
   try {
-    // Configura persistência baseada no "Remember me"
     if (!rememberMe) {
-      // Usa sessionStorage para não persistir entre sessões de navegador
-      _sb.auth.setSession = null; // Será tratado pelo listener
+      _sb.auth.setSession = null;
     }
 
     const { data, error } = await _sb.auth.signInWithPassword({ 
@@ -895,7 +829,6 @@ window.doLogin = async function() {
       return;
     }
 
-    // Sucesso - o onAuthStateChange vai lidar com o redirecionamento
     showMsg('loginMsg', '✅ Autenticado! Carregando perfil...', 'ok');
     
   } catch (err) {
@@ -905,17 +838,12 @@ window.doLogin = async function() {
   }
 };
 
-/* ══ CADASTRO ══ 
-   Compatível com schema: insere na auth.users, trigger cria profile automaticamente.
-   Passa username nos user_metadata conforme esperado pelo handle_new_user()
-*/
 window.doSignup = async function() {
   const name = sanitize(document.getElementById('signupName').value).slice(0, 30);
   const email = sanitize(document.getElementById('signupEmail').value);
   const pw = document.getElementById('signupPw').value;
   const pw2 = document.getElementById('signupPwConf').value;
 
-  // Validações
   let ok = true;
   if (!name) { 
     document.getElementById('signupName').classList.add('err'); 
@@ -956,13 +884,11 @@ window.doSignup = async function() {
       email,
       password: pw,
       options: {
-        // Dados passados para o trigger handle_new_user() criar o profile
         data: { 
           username: name,
-          // Opcional: avatar padrão pode ser definido aqui
           avatar_url: null 
         },
-        emailRedirectTo: REDIRECT_URL
+        emailRedirectTo: window.location.origin + '/' + REDIRECT_URL
       }
     });
     
@@ -977,16 +903,11 @@ window.doSignup = async function() {
       return;
     }
 
-    // Verifica se confirmação de email é necessária
     if (data.user && data.user.identities && data.user.identities.length === 0) {
-      // Usuário já existia
       showMsg('signupMsg', '❌ Este e-mail já está cadastrado.', 'err');
     } else if (data.session) {
-      // Auto-login ativado (email confirm disabled no Supabase)
       showMsg('signupMsg', '✅ Conta criada! Redirecionando...', 'ok');
-      // onAuthStateChange vai redirecionar
     } else {
-      // Email confirmation necessária
       showMsg('signupMsg', 
         '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro.', 
         'ok');
@@ -1001,7 +922,6 @@ window.doSignup = async function() {
   }
 };
 
-/* ══ RECUPERAÇÃO DE SENHA ══ */
 window.openForgot = async function() {
   const email = sanitize(document.getElementById('loginEmail').value);
   if (!email) {
@@ -1012,7 +932,7 @@ window.openForgot = async function() {
   
   try {
     const { error } = await _sb.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + '/reset-password.html' // Crie esta página
+      redirectTo: window.location.origin + '/reset-password.html'
     });
     
     if (error) {
@@ -1025,7 +945,6 @@ window.openForgot = async function() {
   }
 };
 
-/* ══ EVENTOS DE TECLADO ══ */
 document.getElementById('loginPw')?.addEventListener('keydown', e => { 
   if (e.key === 'Enter') doLogin(); 
 });
