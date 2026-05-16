@@ -91,17 +91,6 @@ body {
 @keyframes wiggle { 0%,80%,100%{transform:rotate(0)} 85%{transform:rotate(-10deg)} 92%{transform:rotate(10deg)} }
 .logo-text { font-family:'Playfair Display',serif; font-size:1.45rem; color:var(--text); font-style:italic; }
 .logo-accent { color: var(--purple); }
-.nav-back {
-  color: var(--text-soft);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: .86rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color .2s;
-}
-.nav-back:hover { color: var(--purple-d); }
 
 .main-wrap {
   flex: 1;
@@ -271,22 +260,6 @@ body {
   flex-shrink: 0;
 }
 
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 18px 0;
-  color: var(--gray-d);
-  font-size: .75rem;
-  font-weight: 600;
-}
-.divider::before, .divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
 .btn-primary {
   width: 100%;
   padding: 14px;
@@ -321,30 +294,6 @@ body {
 }
 @keyframes spin { to{transform:rotate(360deg)} }
 
-.btn-google {
-  width: 100%;
-  padding: 12px;
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
-  background: var(--white);
-  color: var(--text);
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-  font-size: .88rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: border-color .2s, box-shadow .2s, transform .2s;
-}
-.btn-google:hover {
-  border-color: var(--purple-l);
-  box-shadow: 0 4px 14px rgba(213,129,199,.18);
-  transform: translateY(-1px);
-}
-.google-icon { font-size: 1.1rem; }
-
 .msg {
   margin-top: 14px;
   padding: 10px 14px;
@@ -357,21 +306,6 @@ body {
 .msg.ok  { display: block; background: #f0fff0; color: #228B22; border: 1px solid #b0e8b0; }
 .msg.err { display: block; background: #fff5f5; color: #c0392b; border: 1px solid #ffccc7; }
 .msg.info { display: block; background: var(--pink); color: var(--purple-d); border: 1px solid var(--pink-d); }
-
-.forgot-link {
-  text-align: right;
-  margin-top: -6px;
-  margin-bottom: 2px;
-}
-.forgot-link a {
-  font-size: .75rem;
-  color: var(--purple-d);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color .2s;
-  cursor: pointer;
-}
-.forgot-link a:hover { color: var(--purple); text-decoration: underline; }
 
 .switch-mode {
   text-align: center;
@@ -445,6 +379,7 @@ body {
   .trust-badges { gap: 12px; }
 }
   </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -466,11 +401,10 @@ body {
 
 <nav class="navbar">
   <div class="nav-inner">
-    <a class="logo" href="index.html">
+    <a class="logo" href="https://poffo-snacks-site.vercel.app/index.html">
       <span class="logo-icon">😸</span>
       <span class="logo-text">Poffo<span class="logo-accent">Snacks</span></span>
     </a>
-    <a class="nav-back" href="index.html">← Voltar ao cardápio</a>
   </div>
 </nav>
 
@@ -505,7 +439,6 @@ body {
             <button class="toggle-pw" type="button" onclick="togglePw('loginPw',this)" aria-label="Mostrar senha">👁️</button>
           </div>
         </div>
-        <div class="forgot-link"><a onclick="openForgot()" style="cursor:pointer;">Esqueci minha senha</a></div>
       </div>
 
       <label class="check-row">
@@ -516,12 +449,6 @@ body {
         <button class="btn-primary" id="btnLogin" onclick="doLogin()">Entrar</button>
       </div>
       <div class="msg" id="loginMsg"></div>
-
-      <div class="divider">ou</div>
-
-      <button class="btn-google" onclick="loginGoogle()">
-        <span class="google-icon">🔍</span> Entrar com Google
-      </button>
 
       <div class="switch-mode">
         Não tem conta? <a onclick="switchTab('signup')">Criar conta →</a>
@@ -604,25 +531,26 @@ body {
 const SUPABASE_URL  = 'https://lvkzupbqdgprvmgivedw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2a3p1cGJxZGdwcnZtZ2l2ZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzYzNDIsImV4cCI6MjA4OTk1MjM0Mn0._-_QkCP1qwnjSGw1IGAImhtcJrqlIXoXCI0IZGSDD8I';
 
-// CORREÇÃO CRÍTICA: MESMA STORAGEKEY DO INDEX.HTML
+// MESMA STORAGEKEY em todas as páginas para compartilhar a sessão via localStorage
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
     storage: localStorage,
-    storageKey: 'poffo-auth-token-v1' // MESMA CHAVE!
+    storageKey: 'poffo-auth-token-v1'
   }
 });
 
-const REDIRECT_URL = 'index.html';
+// URL absoluta do cardápio para redirecionamento correto entre páginas
+const REDIRECT_URL = 'https://poffo-snacks-site.vercel.app/index.html';
 
-const BAD = /[<>"'`;\\]/g;
+const BAD = /[<"'`;\]/g;
 function sanitize(s) { return (s || '').replace(BAD, '').trim(); }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; 
+  t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2400);
 }
@@ -655,24 +583,20 @@ function clearMsgs() {
 
 async function checkUserProfile(session) {
   if (!session || !session.user) return null;
-  
   try {
     const { data: profile, error } = await _sb
       .from('profiles')
       .select('username, role, xp, is_banned')
       .eq('id', session.user.id)
       .single();
-    
     if (error && error.code !== 'PGRST116') {
       console.error('Erro ao buscar perfil:', error);
     }
-    
     if (profile?.is_banned) {
       await _sb.auth.signOut();
       showMsg('loginMsg', '🚷 Conta suspensa temporariamente.', 'err');
       return null;
     }
-    
     return profile;
   } catch (e) {
     console.error('Erro ao verificar perfil:', e);
@@ -682,21 +606,15 @@ async function checkUserProfile(session) {
 
 async function handlePostLoginRedirect(session) {
   const profile = await checkUserProfile(session);
-  
   if (!profile) {
-    setTimeout(() => {
-      window.location.replace(REDIRECT_URL);
-    }, 1000);
+    setTimeout(() => { window.location.replace(REDIRECT_URL); }, 1000);
     return;
   }
-  
   showToast(`✅ Bem-vindo, ${profile.username}!`);
-  setTimeout(() => {
-    window.location.replace(REDIRECT_URL);
-  }, 900);
+  setTimeout(() => { window.location.replace(REDIRECT_URL); }, 900);
 }
 
-// Listener global para detectar login em TEMPO REAL
+// Listener global para detectar login em tempo real e redirecionar
 _sb.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session) {
     showToast('✅ Login realizado! Redirecionando...');
@@ -732,78 +650,47 @@ window.checkStrength = function(pw) {
   const wrap = document.getElementById('pwStrength');
   const label = document.getElementById('pwLabel');
   const bars = [
-    document.getElementById('bar1'), 
-    document.getElementById('bar2'), 
+    document.getElementById('bar1'),
+    document.getElementById('bar2'),
     document.getElementById('bar3')
   ];
-  
   if (!pw) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-
   let score = 0;
   if (pw.length >= 6)  score++;
   if (pw.length >= 10) score++;
   if (/[A-Z]/.test(pw) || /[0-9]/.test(pw) || /[^a-zA-Z0-9]/.test(pw)) score++;
-
   const levels = ['weak','medium','strong'];
   const labels = ['Fraca','Média','Forte'];
-  
   bars.forEach((b, i) => {
     b.className = 'pw-bar' + (i < score ? ' ' + levels[score - 1] : '');
   });
   label.textContent = score > 0 ? 'Senha: ' + labels[score - 1] : '';
 };
 
-window.loginGoogle = async function() {
-  try {
-    const { error } = await _sb.auth.signInWithOAuth({
-      provider: 'google',
-      options: { 
-        redirectTo: window.location.origin + '/' + REDIRECT_URL,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'select_account'
-        }
-      }
-    });
-    if (error) throw error;
-  } catch (err) {
-    console.error('Erro Google OAuth:', err);
-    showToast('❌ Erro ao entrar com Google: ' + err.message);
-  }
-};
-
 window.doLogin = async function() {
   const email = sanitize(document.getElementById('loginEmail').value);
   const pw = document.getElementById('loginPw').value;
-  const rememberMe = document.getElementById('rememberMe').checked;
 
-  if (!email) { 
-    document.getElementById('loginEmail').classList.add('err'); 
-    showMsg('loginMsg','⚠️ Preencha o e-mail.','err'); 
-    return; 
+  if (!email) {
+    document.getElementById('loginEmail').classList.add('err');
+    showMsg('loginMsg','⚠️ Preencha o e-mail.','err');
+    return;
   }
-  if (!pw) { 
-    document.getElementById('loginPw').classList.add('err'); 
-    showMsg('loginMsg','⚠️ Preencha a senha.','err'); 
-    return; 
+  if (!pw) {
+    document.getElementById('loginPw').classList.add('err');
+    showMsg('loginMsg','⚠️ Preencha a senha.','err');
+    return;
   }
 
   setLoading('btnLogin', true);
   showMsg('loginMsg', '', '');
 
   try {
-    // Se não quer manter conectado, usa sessionStorage em vez de localStorage para esta sessão específica
-    // Mas mantém a mesma storageKey para compatibilidade
-    
-    const { data, error } = await _sb.auth.signInWithPassword({ 
-      email, 
-      password: pw 
-    });
-    
+    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pw });
     if (error) {
       let msg = '❌ ' + error.message;
-      if (error.message.toLowerCase().includes('invalid') || 
+      if (error.message.toLowerCase().includes('invalid') ||
           error.message.toLowerCase().includes('credentials')) {
         msg = '❌ E-mail ou senha incorretos.';
       }
@@ -814,10 +701,8 @@ window.doLogin = async function() {
       setLoading('btnLogin', false);
       return;
     }
-
-    // O redirecionamento será tratado pelo onAuthStateChange acima
     showMsg('loginMsg', '✅ Sucesso! Redirecionando...', 'ok');
-    
+    // Redirecionamento tratado pelo onAuthStateChange
   } catch (err) {
     console.error('Erro login:', err);
     showMsg('loginMsg', '❌ Erro de conexão. Tente novamente.', 'err');
@@ -832,28 +717,14 @@ window.doSignup = async function() {
   const pw2 = document.getElementById('signupPwConf').value;
 
   let ok = true;
-  if (!name) { 
-    document.getElementById('signupName').classList.add('err'); 
-    ok = false; 
-  }
-  if (!email) { 
-    document.getElementById('signupEmail').classList.add('err'); 
-    ok = false; 
-  }
-  if (!pw) { 
-    document.getElementById('signupPw').classList.add('err'); 
-    ok = false; 
-  }
-  if (!pw2) { 
-    document.getElementById('signupPwConf').classList.add('err'); 
-    ok = false; 
-  }
-  
+  if (!name) { document.getElementById('signupName').classList.add('err'); ok = false; }
+  if (!email) { document.getElementById('signupEmail').classList.add('err'); ok = false; }
+  if (!pw) { document.getElementById('signupPw').classList.add('err'); ok = false; }
+  if (!pw2) { document.getElementById('signupPwConf').classList.add('err'); ok = false; }
   if (!ok) {
     showMsg('signupMsg', '⚠️ Preencha todos os campos.', 'err');
     return;
   }
-  
   if (pw.length < 6) {
     showMsg('signupMsg', '⚠️ A senha deve ter pelo menos 6 caracteres.', 'err');
     return;
@@ -871,17 +742,13 @@ window.doSignup = async function() {
       email,
       password: pw,
       options: {
-        data: { 
-          username: name,
-          avatar_url: null 
-        },
-        emailRedirectTo: window.location.origin + '/' + REDIRECT_URL
+        data: { username: name, avatar_url: null },
+        emailRedirectTo: REDIRECT_URL
       }
     });
-    
     if (error) {
       let msg = '❌ ' + error.message;
-      if (error.message.toLowerCase().includes('already registered') || 
+      if (error.message.toLowerCase().includes('already registered') ||
           error.message.toLowerCase().includes('user already registered')) {
         msg = '❌ Este e-mail já possui uma conta. Tente fazer login.';
       }
@@ -889,19 +756,17 @@ window.doSignup = async function() {
       setLoading('btnSignup', false);
       return;
     }
-
     if (data.user && data.user.identities && data.user.identities.length === 0) {
       showMsg('signupMsg', '❌ Este e-mail já está cadastrado.', 'err');
     } else if (data.session) {
       showMsg('signupMsg', '✅ Conta criada! Redirecionando...', 'ok');
-      // Será redirecionado pelo onAuthStateChange
+      // Redirecionamento tratado pelo onAuthStateChange
     } else {
-      showMsg('signupMsg', 
-        '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro.', 
+      showMsg('signupMsg',
+        '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro.',
         'ok');
       setTimeout(() => switchTab('login'), 3000);
     }
-    
   } catch (err) {
     console.error('Erro cadastro:', err);
     showMsg('signupMsg', '❌ Erro de conexão. Tente novamente.', 'err');
@@ -910,38 +775,9 @@ window.doSignup = async function() {
   }
 };
 
-window.openForgot = async function() {
-  const email = sanitize(document.getElementById('loginEmail').value);
-  if (!email) {
-    showMsg('loginMsg', '⚠️ Digite seu e-mail acima antes de recuperar a senha.', 'err');
-    document.getElementById('loginEmail').focus();
-    return;
-  }
-  
-  try {
-    const { error } = await _sb.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + '/reset-password.html'
-    });
-    
-    if (error) {
-      showMsg('loginMsg', '❌ ' + error.message, 'err');
-    } else {
-      showMsg('loginMsg', '📧 E-mail de recuperação enviado! Verifique sua caixa de entrada (e spam).', 'ok');
-    }
-  } catch (err) {
-    showMsg('loginMsg', '❌ Erro ao enviar. Tente novamente.', 'err');
-  }
-};
-
-document.getElementById('loginPw')?.addEventListener('keydown', e => { 
-  if (e.key === 'Enter') doLogin(); 
-});
-document.getElementById('loginEmail')?.addEventListener('keydown', e => { 
-  if (e.key === 'Enter') doLogin(); 
-});
-document.getElementById('signupPwConf')?.addEventListener('keydown', e => { 
-  if (e.key === 'Enter') doSignup(); 
-});
+document.getElementById('loginPw')?.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('loginEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('signupPwConf')?.addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
 </script>
 </body>
 </html>
